@@ -64,14 +64,14 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
         }
     }
     func video(videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
-        var title = "Success"
+        /*var title = "Success"
         var message = "Video was saved"
         
         if error != nil {
             title = "Error"
             message = "Video failed to save"
         }
-        createAlert(title, message: message, button: "OK")
+        createAlert(title, message: message, button: "OK")*/
     }
     
     func createAlert(title: String, message: String, button: String){
@@ -82,16 +82,22 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.presentViewController(alert, animated: true, completion: nil)
     }
     func rotated(){
-        if(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation)){
+        if UIDevice.currentDevice().orientation == .LandscapeLeft{
             if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-                overlay.isHorizontal = true
+                overlay.didChangeToLandscapeLeft()
+                cameraController.startVideoCapture()
+            }
+        }
+        else if UIDevice.currentDevice().orientation == .LandscapeRight{
+            if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
+                overlay.didChangeToLandscapeRight()
                 cameraController.startVideoCapture()
             }
         }
         
-        if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)){
+        else if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)){
             if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-                overlay.isHorizontal = false
+                overlay.didChangeToPortrait()
                 cameraController.stopVideoCapture()
             }
            

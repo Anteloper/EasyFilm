@@ -11,20 +11,8 @@ import UIKit
 class OverlayView: UIView {
     
     var textLabel = UILabel()
-    var isHorizontal = false{
-        didSet{
-            if isHorizontal{
-                textLabel.text = "Filming..."
-                //textLabel.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
-               // let origin = CGPoint(x: self.frame.size.width/2 + textLabel.frame.size.width/2, y: 0)
-               // let size = CGSize(width: textLabel.frame.height, height: textLabel.frame.width)
-                //textLabel.frame = CGRect(origin: origin, size: size)
-            }
-            else{
-                textLabel.text = "Rotate to Film"
-            }
-        }
-    }
+    private var counter : Int?
+    private var timer = NSTimer()
     
     
     func setup(){
@@ -38,15 +26,38 @@ class OverlayView: UIView {
         self.addSubview(textLabel)
     }
     
-    func didChangeTopPortrait(){
-        
+    func didChangeToPortrait(){
+        textLabel.text = "Rotate to Film"
+        timer.invalidate()
+        textLabel.transform = CGAffineTransformMakeRotation(CGFloat(0))
     }
     
     func didChangeToLandscapeRight(){
-        
+        textLabel.text = "00:00:00"
+        counter = 0
+        textLabel.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: ("updateCounter"), userInfo: nil, repeats: true)
     }
     func didChangeToLandscapeLeft(){
-        
+        textLabel.text = "00:00:00"
+        counter = 0
+        timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: ("updateCounter"), userInfo: nil, repeats: true)
+        textLabel.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+    }
+    
+    func updateCounter(){
+            
+         if counter! < 10{
+            counter!++
+            textLabel.text = "00:00:0" + String(counter!)
+        }
+        else if counter! < 60{
+            counter!++
+            textLabel.text = "00:00:0" + String(counter!)
+        }
+         else if counter! < 600{
+            
+        }
     }
 
     struct LabelProperties{

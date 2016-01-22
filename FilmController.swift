@@ -36,7 +36,7 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
         cameraController.showsCameraControls = false
         cameraController.allowsEditing = false
         cameraController.delegate = delegate
-        print("2")
+
         //custom view configuration
         let overlayController = OverlayViewController(nibName: "OverlayViewController", bundle: nil)
         let overlayView: OverlayView = overlayController.view as! OverlayView
@@ -52,7 +52,7 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         let mediaType = info[UIImagePickerControllerMediaType] as! NSString
-        print("made it")
+
        // dismissViewControllerAnimated(true, completion: nil)
         // Handle a movie capture
         if mediaType == kUTTypeMovie {

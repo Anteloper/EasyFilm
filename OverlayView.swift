@@ -13,6 +13,7 @@ class OverlayView: UIView {
     var textLabel = UILabel()
     private var counter : Int?
     private var timer = NSTimer()
+    private var blackbar = UIView()
     
     
     func setup(){
@@ -31,6 +32,7 @@ class OverlayView: UIView {
         timer.invalidate()
         textLabel.transform = CGAffineTransformMakeRotation(CGFloat(0))
         textLabel.removeFromSuperview()
+        self.blackbar.removeFromSuperview()
         setup()
     }
     
@@ -45,21 +47,33 @@ class OverlayView: UIView {
     //Called when the to animate the on-screen label, takes in a bool which represents which way
     //the text should rotate
     func animateFilmingWithPositiveRotation(isPositive : Bool){
+        
         var rotation = M_PI_2
         var pFromTop: CGFloat = self.frame.width - 30
+        var bbOrigin = CGPoint(x:self.frame.size.width-25, y:0)
+        
         if !isPositive{
             pFromTop = 10
             rotation = -M_PI_2
+            bbOrigin = CGPointZero
         }
+        
+        
+        blackbar = UIView(frame: CGRect(origin: bbOrigin, size: CGSize(width: 25, height: self.frame.size.height)))
+        blackbar.backgroundColor = UIColor.blackColor()
+        blackbar.alpha = 0.0
+        self.addSubview(blackbar)
+        
         
         textLabel.text = "00:00:00"
         self.textLabel.transform = CGAffineTransformMakeRotation(CGFloat(rotation))
         counter = 0
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: ("updateCounter"), userInfo: nil, repeats: true)
         
-        UIView.animateWithDuration(1.0, animations: {
+        UIView.animateWithDuration(1.5, animations: {
             self.textLabel.font = UIFont(name: LabelProperties.font, size: LabelProperties.fontSize-5)
             self.textLabel.sizeToFit()
+            self.blackbar.alpha = 0.5
             self.textLabel.frame = CGRect(origin: CGPoint(x:pFromTop,
                 y: self.frame.height/2-self.textLabel.frame.width/2 ), size: self.textLabel.frame.size)
             
@@ -67,20 +81,22 @@ class OverlayView: UIView {
     }
     
     func updateCounter(){
-            
-         if counter! < 10{
+        
+        if counter! < 10{
             counter!++
             textLabel.text = "00:00:0" + String(counter!)
         }
+            
         else if counter! < 60{
             counter!++
             textLabel.text = "00:00:" + String(counter!)
         }
-         else if counter! < 600{
-            
+        else if counter! < 600{
         }
     }
 
+    
+    
     //MARK: Label Properties
     struct LabelProperties{
         static let labelWidthF: CGFloat = 150

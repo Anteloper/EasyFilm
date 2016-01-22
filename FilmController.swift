@@ -46,6 +46,7 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
 
         presentViewController(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
+            overlayView.setup()
         })
         
         return true

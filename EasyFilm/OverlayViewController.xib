@@ -14,21 +14,6 @@
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT" customClass="OverlayView" customModule="EasyFilm" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-            <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rotate to Film" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fhC-nE-SEM">
-                    <rect key="frame" x="244.5" y="42" width="112.5" height="23"/>
-                    <fontDescription key="fontDescription" name="GillSans-Light" family="Gill Sans" pointSize="20"/>
-                    <color key="textColor" red="1" green="0.010267665139987225" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                    <nil key="highlightedColor"/>
-                </label>
-            </subviews>
-            <constraints>
-                <constraint firstItem="fhC-nE-SEM" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="42" id="0MS-b4-Um5"/>
-                <constraint firstItem="fhC-nE-SEM" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="hRt-iC-184"/>
-            </constraints>
-            <connections>
-                <outlet property="textLabel" destination="fhC-nE-SEM" id="uMr-h0-UJF"/>
-            </connections>
         </view>
     </objects>
 </document>

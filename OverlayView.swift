@@ -14,26 +14,33 @@ class OverlayView: UIView {
     private var counter : Int?
     private var timer = NSTimer()
     private var blackbar = UIView()
+    private var flash = UIButton()
+    private var flashOn = false
+    
     
     
     func setup(){
-        textLabel.text = "Rotate to Film"
-        let centerPoint = CGPoint(x: self.frame.width/2-LabelProperties.labelWidthF/2,
-            y: self.frame.height/2 - LabelProperties.labelHeightF/2)
-        textLabel.frame = CGRect(origin: centerPoint, size:
-            CGSize(width: LabelProperties.labelWidth, height: LabelProperties.labelHeight))
-        textLabel.font = UIFont(name: LabelProperties.font, size: LabelProperties.fontSize)
-        textLabel.textColor = UIColor.redColor()
-        textLabel.sizeToFit()
-        self.addSubview(textLabel)
+        
+        //configure flash button
+        flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
+        flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.buttonSizeF/2,
+            y: frame.size.height/10),
+            size: CGSize(width: Properties.buttonSize, height: Properties.buttonSize))
+        flash.addTarget(self, action: "flashPressed", forControlEvents: .TouchUpInside)
+        addSubview(flash)
+        
+        //configure text label
+        textLabel.text = "00:00:00"
+        textLabel.textAlignment = .Center
+        textLabel.textColor = UIColor.whiteColor()
     }
     
     func didChangeToPortrait(){
         timer.invalidate()
         textLabel.transform = CGAffineTransformMakeRotation(CGFloat(0))
         textLabel.removeFromSuperview()
-        self.blackbar.removeFromSuperview()
-        setup()
+        blackbar.removeFromSuperview()
+        addSubview(flash)
     }
     
     func didChangeToLandscapeRight(){
@@ -48,18 +55,20 @@ class OverlayView: UIView {
     //the text should rotate
     func animateFilmingWithPositiveRotation(isPositive : Bool){
         
+        flash.removeFromSuperview()
+        
         var rotation = M_PI_2
-        var pFromTop: CGFloat = self.frame.width - 30
+        var pFromTop: CGFloat = self.frame.width - Properties.labelHeightF
         var bbOrigin = CGPoint(x:self.frame.size.width-25, y:0)
         
         if !isPositive{
-            pFromTop = 10
+            pFromTop = 0
             rotation = -M_PI_2
             bbOrigin = CGPointZero
         }
         
         
-        blackbar = UIView(frame: CGRect(origin: bbOrigin, size: CGSize(width: 25, height: self.frame.size.height)))
+        blackbar = UIView(frame: CGRect(origin: bbOrigin, size: CGSize(width: Properties.blackBarWidthF, height: self.frame.size.height)))
         blackbar.backgroundColor = UIColor.blackColor()
         blackbar.alpha = 0.0
         self.addSubview(blackbar)
@@ -69,13 +78,15 @@ class OverlayView: UIView {
         self.textLabel.transform = CGAffineTransformMakeRotation(CGFloat(rotation))
         counter = 0
         timer = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: ("updateCounter"), userInfo: nil, repeats: true)
+        textLabel.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.labelHeightF-2, y: 0), size: CGSize(width: Properties.labelHeightF, height: self.frame.maxY))
+        addSubview(textLabel)
         
-        UIView.animateWithDuration(1.5, animations: {
-            self.textLabel.font = UIFont(name: LabelProperties.font, size: LabelProperties.fontSize-5)
-            self.textLabel.sizeToFit()
+        UIView.animateWithDuration(1.0, animations: {
+            self.textLabel.font = UIFont(name: Properties.font, size: Properties.fontSize-5)
+            
             self.blackbar.alpha = 0.5
-            self.textLabel.frame = CGRect(origin: CGPoint(x:pFromTop,
-                y: self.frame.height/2-self.textLabel.frame.width/2 ), size: self.textLabel.frame.size)
+            self.textLabel.frame = CGRect(origin: CGPoint(x:pFromTop, y: 0),
+                size: self.textLabel.frame.size)
             
         })
     }
@@ -94,15 +105,38 @@ class OverlayView: UIView {
         else if counter! < 600{
         }
     }
+    
+    func flashPressed(){
+        flash.transform = CGAffineTransformMakeScale(0, 0)
+        if flashOn{
+            flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
+        }
+        else{
+            flash.setBackgroundImage(UIImage(imageLiteral: "FlashFull"), forState: .Normal)
+        }
+        
+        flashOn = !flashOn
+        UIView.animateWithDuration(0.5,
+            delay: 0.0,
+            usingSpringWithDamping: 0.5,
+            initialSpringVelocity: 15,
+            options: .CurveLinear,
+            animations: {
+                self.flash.transform = CGAffineTransformIdentity
+            },
+            completion: nil
+        )
+    }
 
     
     
-    //MARK: Label Properties
-    struct LabelProperties{
-        static let labelWidthF: CGFloat = 150
-        static let labelWidth = 150
-        static let labelHeightF: CGFloat = 50
-        static let labelHeight = 50
+    //MARK: Subview Properties
+    struct Properties{
+        static let buttonSize = 75
+        static let buttonSizeF: CGFloat = 75
+        static let labelHeightF: CGFloat = 25
+        static let labelHeight = 25
+        static let blackBarWidthF: CGFloat = 25
         static let fontSize: CGFloat = 24
         static let font = "Gill Sans"
     }

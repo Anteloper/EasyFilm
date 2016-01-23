@@ -11,24 +11,29 @@ import MobileCoreServices
 
 class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    
+    //MARK: Global variables
     let cameraController: UIImagePickerController! = UIImagePickerController()
     
+    
     override func viewDidAppear(animated: Bool) {
-
         if !startCameraFromViewController(self, withDelegate: self){
             createAlert("Camera not found", message: "A connection to the camera could not be made",
                 button: "OK")
         }
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "rotated", name: UIDeviceOrientationDidChangeNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self,
+            selector: "rotated",
+            name: UIDeviceOrientationDidChangeNotification,
+            object: nil)
     }
-    func startCameraFromViewController(viewController: UIViewController, withDelegate delegate: protocol<UIImagePickerControllerDelegate, UINavigationControllerDelegate>) -> Bool {
-        
+    
+    
+    func startCameraFromViewController(viewController: UIViewController,
+        withDelegate delegate: protocol<UIImagePickerControllerDelegate,
+        UINavigationControllerDelegate>) -> Bool {
 
         if UIImagePickerController.isSourceTypeAvailable(.Camera) == false {
             return false
         }
-
         
         //camera configuration
         cameraController.sourceType = .Camera
@@ -43,7 +48,6 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
         overlayView.frame = cameraController.view.frame
         
         //add the overlay after the camera is displayed
-
         presentViewController(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
             overlayView.setup()
@@ -51,7 +55,11 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         return true
     }
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    
+    
+    func imagePickerController(picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+            
         let mediaType = info[UIImagePickerControllerMediaType] as! NSString
 
        // dismissViewControllerAnimated(true, completion: nil)
@@ -59,19 +67,15 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if mediaType == kUTTypeMovie {
             let path = (info[UIImagePickerControllerMediaURL] as! NSURL).path
             if UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path!) {
-                UISaveVideoAtPathToSavedPhotosAlbum(path!, self, "video:didFinishSavingWithError:contextInfo:", nil)
+                UISaveVideoAtPathToSavedPhotosAlbum(path!,
+                    self, "video:didFinishSavingWithError:contextInfo:",nil)
             }
         }
     }
     func video(videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
-        /*var title = "Success"
-        var message = "Video was saved"
-        
-        if error != nil {
-            title = "Error"
-            message = "Video failed to save"
+        if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
+            overlay.didSaveVideoSuccesfully()
         }
-        createAlert(title, message: message, button: "OK")*/
     }
     
     func createAlert(title: String, message: String, button: String){
@@ -84,13 +88,13 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func rotated(){
         if UIDevice.currentDevice().orientation == .LandscapeLeft{
             if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-                overlay.didChangeToLandscapeLeft()
+                overlay.beginFilmingWithPositiveRotation(true)
                 cameraController.startVideoCapture()
             }
         }
         else if UIDevice.currentDevice().orientation == .LandscapeRight{
             if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-                overlay.didChangeToLandscapeRight()
+                overlay.beginFilmingWithPositiveRotation(false)
                 cameraController.startVideoCapture()
             }
         }

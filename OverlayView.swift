@@ -7,21 +7,20 @@
 //
 
 import UIKit
-import AVFoundation
 
 class OverlayView: UIView {
     
     //MARK: Global Variables
-    var textLabel = UILabel()
+    
+    var flashOn = false
+    private var textLabel = UILabel()
     private var counter : Int?
     private var timer = NSTimer()
     private var blackbar = UIView()
     private var flash = UIButton()
-    private var flashOn = false
     
     
     func setup(){
-
         //configure flash button
         flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
         flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.buttonSizeF/2,
@@ -45,8 +44,7 @@ class OverlayView: UIView {
     }
     
     
-    func beginFilmingWithPositiveRotation(isPositive: Bool){
-        toggleFlash(flashOn)
+    func didBeginFilmingWithPositiveRotation(isPositive: Bool){
         //Configure local orientation-based variables
         var rotation = M_PI_2
         var pFromTop: CGFloat = self.frame.width - Properties.labelHeightF
@@ -119,7 +117,7 @@ class OverlayView: UIView {
             flash.setBackgroundImage(UIImage(imageLiteral: "FlashFull"), forState: .Normal)
         }
         flashOn = !flashOn
-        toggleFlash(true)
+
         
         //Animate
         flash.transform = CGAffineTransformMakeScale(0, 0)
@@ -140,6 +138,7 @@ class OverlayView: UIView {
         let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height/2-sideLength/2)
         saveView.frame = CGRect(origin: origin, size: CGSize(width: sideLength, height: sideLength))
         let checkView = UIImageView(frame: saveView.bounds)
+        
         //Add ImageView
         checkView.image = UIImage(imageLiteral: "Check")
         checkView.contentMode = .ScaleToFill
@@ -167,24 +166,7 @@ class OverlayView: UIView {
         )
     }
 
-    func toggleFlash(shouldFlash : Bool){
-        if shouldFlash{
-            let device = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
-            if (device.hasTorch) {
-                do {
-                    try device.lockForConfiguration()
-                    if (device.torchMode == AVCaptureTorchMode.On) {
-                        device.torchMode = AVCaptureTorchMode.Off
-                    } else {
-                        try device.setTorchModeOnWithLevel(1.0)
-                    }
-                    device.unlockForConfiguration()
-                } catch {
-                    print(error)
-                }
-            }
-        }
-    }
+    
     
     //MARK: Subview Properties
     struct Properties{

@@ -9,7 +9,10 @@
 import UIKit
 import MobileCoreServices
 
-class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class FilmController: UIViewController,
+                      UIImagePickerControllerDelegate,
+                      UINavigationControllerDelegate {
+    
     
     //MARK: Global variables
     let cameraController: UIImagePickerController! = UIImagePickerController()
@@ -17,7 +20,8 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     override func viewDidAppear(animated: Bool) {
         if !startCameraFromViewController(self, withDelegate: self){
-            createAlert("Camera not found", message: "A connection to the camera could not be made",
+            createAlert("Camera not found",
+                message: "A connection to the camera could not be made",
                 button: "OK")
         }
         NSNotificationCenter.defaultCenter().addObserver(self,
@@ -56,14 +60,11 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
         return true
     }
     
-    
     func imagePickerController(picker: UIImagePickerController,
         didFinishPickingMediaWithInfo info: [String : AnyObject]) {
             
         let mediaType = info[UIImagePickerControllerMediaType] as! NSString
 
-       // dismissViewControllerAnimated(true, completion: nil)
-        // Handle a movie capture
         if mediaType == kUTTypeMovie {
             let path = (info[UIImagePickerControllerMediaURL] as! NSURL).path
             if UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path!) {
@@ -72,6 +73,7 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         }
     }
+    
     func video(videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
             overlay.didSaveVideoSuccesfully()
@@ -82,29 +84,39 @@ class FilmController: UIViewController, UIImagePickerControllerDelegate, UINavig
         let alert = UIAlertController(title: title,
             message: message,
             preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: button, style: UIAlertActionStyle.Default, handler: nil))
+        alert.addAction(UIAlertAction(title: button,
+            style: UIAlertActionStyle.Default,
+            handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    
     func rotated(){
         if UIDevice.currentDevice().orientation == .LandscapeLeft{
-            if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-                overlay.beginFilmingWithPositiveRotation(true)
-                cameraController.startVideoCapture()
-            }
+                startCapture(positiveRotation: true)
         }
         else if UIDevice.currentDevice().orientation == .LandscapeRight{
-            if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-                overlay.beginFilmingWithPositiveRotation(false)
-                cameraController.startVideoCapture()
-            }
+            startCapture(positiveRotation: false)
         }
         
         else if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)){
             if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
                 overlay.didChangeToPortrait()
                 cameraController.stopVideoCapture()
+                cameraController.cameraFlashMode = .Off
             }
-           
+        }
+    }
+    
+    func startCapture(positiveRotation isPos: Bool){
+        if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
+            overlay.didBeginFilmingWithPositiveRotation(isPos)
+            if overlay.flashOn{
+                cameraController.cameraFlashMode = .On
+            }
+            else{
+                cameraController.cameraFlashMode = .Off
+            }
+            cameraController.startVideoCapture()
         }
     }
 }

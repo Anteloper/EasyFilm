@@ -16,8 +16,15 @@ class FilmController: UIViewController,
     
     //MARK: Global variables
     let cameraController: UIImagePickerController! = UIImagePickerController()
+    var isFirstLaunch = false
     
-    
+    override func viewDidLoad(){
+        let isNotFirstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("isFirstLaunch")
+        if !isNotFirstLaunch {
+            isFirstLaunch = true
+            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isFirstLaunch")
+        }
+    }
     override func viewDidAppear(animated: Bool) {
         if !startCameraFromViewController(self, withDelegate: self){
             createAlert("Camera not found",
@@ -55,7 +62,7 @@ class FilmController: UIViewController,
         //add the overlay after the camera is displayed
         presentViewController(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
-            overlayView.setup()
+            overlayView.setup(isFirstLaunch: self.isFirstLaunch)
         })
         
         return true

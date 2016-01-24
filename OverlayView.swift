@@ -13,6 +13,8 @@ class OverlayView: UIView {
     //MARK: Global Variables
     
     var flashOn = false
+
+    private var phoneView = UIView()
     private var textLabel = UILabel()
     private var counter : Int?
     private var timer = NSTimer()
@@ -20,8 +22,11 @@ class OverlayView: UIView {
     private var flash = UIButton()
     
     
-    func setup(){
+    func setup(isFirstLaunch fl: Bool){
         //configure flash button
+        if fl{
+            firstLaunch()
+        }
         flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
         flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.buttonSizeF/2,
             y: frame.size.height/10),
@@ -38,6 +43,7 @@ class OverlayView: UIView {
     func didChangeToPortrait(){
         timer.invalidate()
         textLabel.transform = CGAffineTransformMakeRotation(CGFloat(0))
+        phoneView.removeFromSuperview()
         textLabel.removeFromSuperview()
         blackbar.removeFromSuperview()
         addSubview(flash)
@@ -56,6 +62,7 @@ class OverlayView: UIView {
         }
         
         flash.removeFromSuperview()
+        phoneView.removeFromSuperview()
         
         //Configure Black Bar
         blackbar.removeFromSuperview()
@@ -101,7 +108,6 @@ class OverlayView: UIView {
         }
         flashOn = !flashOn
 
-        
         //Animate
         flash.transform = CGAffineTransformMakeScale(0, 0)
         UIView.animateWithDuration(0.5,
@@ -120,9 +126,9 @@ class OverlayView: UIView {
         let sideLength: CGFloat = Properties.saveViewRatio*frame.size.width
         let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height/2-sideLength/2)
         saveView.frame = CGRect(origin: origin, size: CGSize(width: sideLength, height: sideLength))
-        let checkView = UIImageView(frame: saveView.bounds)
         
         //Add ImageView
+        let checkView = UIImageView(frame: saveView.bounds)
         checkView.image = UIImage(imageLiteral: "Check")
         checkView.contentMode = .ScaleToFill
         saveView.addSubview(checkView)
@@ -132,22 +138,44 @@ class OverlayView: UIView {
         
         //Animate
         saveView.transform = CGAffineTransformMakeScale(0,0)
-        UIView.animateWithDuration(0.5,
+        UIView.animateWithDuration(0.75,
             delay: 0.0,
             usingSpringWithDamping: 0.5,
             initialSpringVelocity: 15,
             options: .CurveLinear,
             animations: {
-                saveView.alpha = 0.5
+                saveView.alpha = 0.75
                 saveView.transform = CGAffineTransformIdentity
             },
             completion: { (didComplete: Bool) in
                 if(didComplete){
-                    UIView.animateWithDuration(0.5, animations: {saveView.alpha = 0.0} )
+                    UIView.animateWithDuration(0.75, animations: {saveView.alpha = 0.0} )
                 }
             }
         )
     }
+    //MARK: First Launch
+    func firstLaunch(){
+        //Configure UIView
+        let sideLength: CGFloat = Properties.phoneViewRatio*frame.size.width
+        let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height/2-sideLength/2)
+        phoneView.frame = CGRect(origin: origin, size: CGSize(width: sideLength, height: sideLength))
+        
+        //Add ImageView
+        let pictureView = UIImageView(frame: phoneView.bounds)
+        pictureView.image = UIImage(imageLiteral: "Phone")
+        pictureView.contentMode = .ScaleToFill
+        phoneView.addSubview(pictureView)
+        phoneView.sendSubviewToBack(pictureView)
+        phoneView.alpha = 0.75
+        self.addSubview(phoneView)
+        
+        //Animate
+        UIView.animateWithDuration(1.5, delay:0, options: [.Repeat], animations: {
+            self.phoneView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+            }, completion: nil)
+    }
+
     
     //MARK: Timer
     func updateCounter(){
@@ -172,7 +200,8 @@ class OverlayView: UIView {
     
     //MARK: Subview Properties
     struct Properties{
-        static let saveViewRatio: CGFloat = 4/5
+        static let saveViewRatio: CGFloat = 3/4
+        static let phoneViewRatio: CGFloat = 2/3
         static let buttonSize = 75
         static let buttonSizeF: CGFloat = 75
         static let labelHeightF: CGFloat = 25
@@ -181,5 +210,4 @@ class OverlayView: UIView {
         static let fontSize: CGFloat = 24
         static let font = "Gill Sans"
     }
-
 }

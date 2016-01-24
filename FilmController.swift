@@ -24,6 +24,7 @@ class FilmController: UIViewController,
                 message: "A connection to the camera could not be made",
                 button: "OK")
         }
+        
         NSNotificationCenter.defaultCenter().addObserver(self,
             selector: "rotated",
             name: UIDeviceOrientationDidChangeNotification,

@@ -90,24 +90,7 @@ class OverlayView: UIView {
                 size: self.textLabel.frame.size)})
     }
     
-    
-    //MARK: Timer
-    //Todo Make the time work longer
-    func updateCounter(){
-        if counter! < 10{
-            counter!++
-            textLabel.text = "00:00:0" + String(counter!)
-        }
-            
-        else if counter! < 60{
-            counter!++
-            textLabel.text = "00:00:" + String(counter!)
-        }
-            
-        else if counter! < 600{
-        }
-    }
-    
+
     func flashPressed(){
         //Adjust picture based on flashOn, update flashOn
         if flashOn{
@@ -165,12 +148,31 @@ class OverlayView: UIView {
             }
         )
     }
-
     
+    //MARK: Timer
+    func updateCounter(){
+        counter!++
+        if counter! < 10{
+            textLabel.text = "00:00:0" + String(counter!)
+        }
+        else if counter! < 60{
+            textLabel.text = "00:00:" + String(counter!)
+        }
+        else if counter! < 600{
+            let secondsNum = counter!%60
+            var secondsString = String(counter!%60)
+            if secondsNum < 10{
+                secondsString = "0" + String(secondsNum)
+            }
+            let minutes = counter!/60
+            textLabel.text = "00:0" + String(minutes) + ":" + secondsString
+        }
+    }
+
     
     //MARK: Subview Properties
     struct Properties{
-        static let saveViewRatio: CGFloat = 2/3
+        static let saveViewRatio: CGFloat = 4/5
         static let buttonSize = 75
         static let buttonSizeF: CGFloat = 75
         static let labelHeightF: CGFloat = 25

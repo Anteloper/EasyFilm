@@ -60,6 +60,7 @@ class OverlayView: UIView {
         flash.removeFromSuperview()
         
         //Configure Black Bar
+        blackbar.removeFromSuperview()
         blackbar = UIView(frame: CGRect(origin: bbOrigin, size:
             CGSize(width: Properties.blackBarWidthF, height: self.frame.size.height)))
         blackbar.backgroundColor = UIColor.blackColor()
@@ -67,13 +68,14 @@ class OverlayView: UIView {
         self.addSubview(blackbar)
         
         //Configure Timer
+        timer.invalidate()
         counter = 0
         timer = NSTimer.scheduledTimerWithTimeInterval(1,
             target: self,
             selector: ("updateCounter"),
             userInfo: nil,
             repeats: true)
-        
+    
         //Configure Text Label
         textLabel.text = "00:00:00"
         self.textLabel.transform = CGAffineTransformMakeRotation(CGFloat(rotation))

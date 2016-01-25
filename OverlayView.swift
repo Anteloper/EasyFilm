@@ -36,18 +36,10 @@ class OverlayView: UIView {
             ongoingIntroduction = true
             firstLaunch()
         }
-        ongoingIntroduction = false
-        flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
-        flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.flashbuttonSizeF/2,
-            y: frame.size.height/10),
-            size: CGSize(width: Properties.flashbuttonSize, height: Properties.flashbuttonSize))
-        flash.addTarget(self, action: "flashPressed", forControlEvents: .TouchUpInside)
-        //addSubview(flash)
-        
-        //configure text label
-        textLabel.text = "00:00:00"
-        textLabel.textAlignment = .Center
-        textLabel.textColor = UIColor.whiteColor()
+        if !ongoingIntroduction{
+            configureFlashButton()
+            self.addSubview(flash)
+        }
     }
     
     //MARK: Changed to portrait
@@ -62,6 +54,7 @@ class OverlayView: UIView {
     
     //MARK: Began Filming
     func didBeginFilmingWithPositiveRotation(isPositive: Bool){
+        
         //Configure local orientation-based variables
         var rotation = M_PI_2
         var pFromTop: CGFloat = self.frame.width - Properties.labelHeightF
@@ -78,33 +71,15 @@ class OverlayView: UIView {
         upArrowView.removeFromSuperview()
         orientationLabel.removeFromSuperview()
         okayButton.removeFromSuperview()
-        self.alpha = 0.0
+        self.backgroundColor = UIColor.clearColor()
         
+        configureBlackBar(bbOrigin)
+        configureTimer()
+        configureTimerLabel(CGFloat(rotation))
         
-        //Configure Black Bar
-        blackbar.removeFromSuperview()
-        blackbar = UIView(frame: CGRect(origin: bbOrigin, size:
-            CGSize(width: Properties.blackBarWidthF, height: self.frame.size.height)))
-        blackbar.backgroundColor = UIColor.blackColor()
-        blackbar.alpha = 0.0
         self.addSubview(blackbar)
-        
-        //Configure Timer
-        timer.invalidate()
-        counter = 0
-        timer = NSTimer.scheduledTimerWithTimeInterval(1,
-            target: self,
-            selector: ("updateCounter"),
-            userInfo: nil,
-            repeats: true)
-    
-        //Configure Text Label
-        textLabel.text = "00:00:00"
-        self.textLabel.transform = CGAffineTransformMakeRotation(CGFloat(rotation))
-        textLabel.frame = CGRect(origin:
-            CGPoint(x: frame.size.width/2-Properties.labelHeightF-2, y: 0),
-            size: CGSize(width: Properties.labelHeightF, height: self.frame.maxY))
-        addSubview(textLabel)
+        self.addSubview(textLabel)
+        print("beganfilmingaddedsubviews")
         
         //Animate
         UIView.animateWithDuration(1.0, animations: {
@@ -293,6 +268,7 @@ class OverlayView: UIView {
                                                     y: orientationLabel.frame.origin.y+50)
             orientationLabel.textAlignment = .Center
             orientationLabel.alpha = 0.0
+            configureFlashButton()
             addSubview(upArrowView)
             addSubview(flash)
             UIView.animateWithDuration(0.5,
@@ -358,8 +334,45 @@ class OverlayView: UIView {
         }
         
     }
-
-   
+    
+    //MARK: Subview Configurations
+    func configureTimerLabel(rotation: CGFloat){
+        textLabel.text = "00:00:00"
+        self.textLabel.transform = CGAffineTransformMakeRotation(rotation)
+        textLabel.frame = CGRect(origin:
+            CGPoint(x: frame.size.width/2-Properties.labelHeightF-2, y: 0),
+            size: CGSize(width: Properties.labelHeightF, height: self.frame.maxY))
+        textLabel.alpha = 1.0
+        textLabel.textAlignment = .Center
+        textLabel.textColor = UIColor.whiteColor()
+        self.bringSubviewToFront(textLabel)
+        print("submethod textlabel")
+    }
+    func configureBlackBar(bbOrigin: CGPoint){
+        blackbar.removeFromSuperview()
+        blackbar = UIView(frame: CGRect(origin: bbOrigin, size:
+            CGSize(width: Properties.blackBarWidthF, height: self.frame.size.height)))
+        blackbar.backgroundColor = UIColor.blackColor()
+        blackbar.alpha = 0.5
+        self.bringSubviewToFront(blackbar)
+        print("submethod blackbar")
+    }
+    func configureTimer(){
+        timer.invalidate()
+        counter = 0
+        timer = NSTimer.scheduledTimerWithTimeInterval(1,
+            target: self,
+            selector: ("updateCounter"),
+            userInfo: nil,
+            repeats: true)
+    }
+    func configureFlashButton(){
+        flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
+        flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.flashbuttonSizeF/2,
+            y: frame.size.height/10),
+            size: CGSize(width: Properties.flashbuttonSize, height: Properties.flashbuttonSize))
+        flash.addTarget(self, action: "flashPressed", forControlEvents: .TouchUpInside)
+    }
     
     //MARK: Subview Properties
     struct Properties{

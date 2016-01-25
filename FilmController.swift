@@ -62,9 +62,9 @@ class FilmController: UIViewController,
         //add the overlay after the camera is displayed
         presentViewController(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
-            overlayView.setup(isFirstLaunch: self.isFirstLaunch)
+            overlayView.setup(isFirstLaunch: true)
         })
-        
+            
         return true
     }
     
@@ -126,5 +126,8 @@ class FilmController: UIViewController,
             }
             cameraController.startVideoCapture()
         }
+    }
+    override func didReceiveMemoryWarning() {
+        print("help")
     }
 }

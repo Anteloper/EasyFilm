@@ -15,24 +15,31 @@ class OverlayView: UIView {
     var flashOn = false
 
     private var phoneView = UIView()
+    private var portraitLockView = UIView()
+    private var upArrowView = UIView()
+    private var orientationLabel = UILabel()
     private var textLabel = UILabel()
     private var counter : Int?
     private var timer = NSTimer()
     private var blackbar = UIView()
     private var flash = UIButton()
+    private var okayButton = UIButton()
+    private var whichWelcomeScreen = 0
+    private var portraitPictureView = UIImageView()
+    private var ongoingIntroduction = false
     
-    
+    //MARK: Setup
     func setup(isFirstLaunch fl: Bool){
         //configure flash button
         if fl{
             firstLaunch()
         }
         flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
-        flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.buttonSizeF/2,
+        flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.flashbuttonSizeF/2,
             y: frame.size.height/10),
-            size: CGSize(width: Properties.buttonSize, height: Properties.buttonSize))
+            size: CGSize(width: Properties.flashbuttonSize, height: Properties.flashbuttonSize))
         flash.addTarget(self, action: "flashPressed", forControlEvents: .TouchUpInside)
-        addSubview(flash)
+        //addSubview(flash)
         
         //configure text label
         textLabel.text = "00:00:00"
@@ -40,6 +47,7 @@ class OverlayView: UIView {
         textLabel.textColor = UIColor.whiteColor()
     }
     
+    //MARK: Changed to portrait
     func didChangeToPortrait(){
         timer.invalidate()
         textLabel.transform = CGAffineTransformMakeRotation(CGFloat(0))
@@ -49,7 +57,7 @@ class OverlayView: UIView {
         addSubview(flash)
     }
     
-    
+    //MARK: Began Filming
     func didBeginFilmingWithPositiveRotation(isPositive: Bool){
         //Configure local orientation-based variables
         var rotation = M_PI_2
@@ -63,6 +71,12 @@ class OverlayView: UIView {
         
         flash.removeFromSuperview()
         phoneView.removeFromSuperview()
+        portraitLockView.removeFromSuperview()
+        upArrowView.removeFromSuperview()
+        orientationLabel.removeFromSuperview()
+        okayButton.removeFromSuperview()
+        //self.alpha = 0.0
+        
         
         //Configure Black Bar
         blackbar.removeFromSuperview()
@@ -97,7 +111,7 @@ class OverlayView: UIView {
                 size: self.textLabel.frame.size)})
     }
     
-
+    //MARK: Flash Toggled
     func flashPressed(){
         //Adjust picture based on flashOn, update flashOn
         if flashOn{
@@ -120,6 +134,7 @@ class OverlayView: UIView {
         )
     }
     
+    //MARK: Video Saved
     func didSaveVideoSuccesfully(){
         //Configure UIView
         let saveView = UIView()
@@ -154,28 +169,6 @@ class OverlayView: UIView {
             }
         )
     }
-    //MARK: First Launch
-    func firstLaunch(){
-        //Configure UIView
-        let sideLength: CGFloat = Properties.phoneViewRatio*frame.size.width
-        let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height/2-sideLength/2)
-        phoneView.frame = CGRect(origin: origin, size: CGSize(width: sideLength, height: sideLength))
-        
-        //Add ImageView
-        let pictureView = UIImageView(frame: phoneView.bounds)
-        pictureView.image = UIImage(imageLiteral: "Phone")
-        pictureView.contentMode = .ScaleToFill
-        phoneView.addSubview(pictureView)
-        phoneView.sendSubviewToBack(pictureView)
-        phoneView.alpha = 0.75
-        self.addSubview(phoneView)
-        
-        //Animate
-        UIView.animateWithDuration(1.5, delay:0, options: [.Repeat], animations: {
-            self.phoneView.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
-            }, completion: nil)
-    }
-
     
     //MARK: Timer
     func updateCounter(){
@@ -198,12 +191,125 @@ class OverlayView: UIView {
     }
 
     
+    //MARK: First Launch
+    func firstLaunch(){
+        backgroundColor = UIColor.whiteColor()
+        alpha = 0.85
+        
+        self.flash.removeFromSuperview()
+        
+        //Configure Orientation Label
+        orientationLabel.text = "Welcome!\n\n We see you're new so here's a quick run down."
+        let labelWidth: CGFloat = Properties.orientationLabelRatio*frame.size.width
+        let lOrigin = CGPoint(x:frame.size.width/2-labelWidth/2, y:frame.height/8)
+        orientationLabel.frame = CGRect(origin: lOrigin,
+        size: CGSize(width: labelWidth, height: 100))
+        orientationLabel.font = UIFont(name: "Gill Sans", size: 18)
+        orientationLabel.numberOfLines = 0
+        orientationLabel.textAlignment = .Center
+        orientationLabel.lineBreakMode = .ByWordWrapping
+        orientationLabel.textColor = UIColor(red: 51/255.0, green: 89/255.0, blue: 254/255.0, alpha: 0.75)
+        self.bringSubviewToFront(orientationLabel)
+        self.addSubview(orientationLabel)
+        
+        //Configure Okay Button
+        okayButton.setAttributedTitle(NSAttributedString(string: "Okay"), forState: .Normal)
+        okayButton.backgroundColor = orientationLabel.textColor
+        let buttonWidth: CGFloat = Properties.okayButtonRatio*frame.size.width
+        let bOrigin = CGPoint(x: frame.size.width/2-buttonWidth/2, y: (frame.height*7)/8)
+        okayButton.titleLabel!.font = UIFont(name: "Gill Sans", size: 15)
+        okayButton.tintColor = UIColor.whiteColor()
+        okayButton.setTitleColor(UIColor.whiteColor(), forState:  .Normal)
+        okayButton.frame = CGRect(origin: bOrigin, size: CGSize(width: buttonWidth, height: Properties.buttonHeight))
+        okayButton.addTarget(self, action: "nextScreen", forControlEvents: .TouchUpInside)
+        self.addSubview(okayButton)
+        whichWelcomeScreen++
+    }
+
+    func nextScreen(){
+        switch(whichWelcomeScreen)
+        {
+        //Add Pictures for Orientation Lock
+        case 1:
+            whichWelcomeScreen++
+            orientationLabel.text = "Make sure portrait orientation lock is off"
+            orientationLabel.frame.origin = CGPoint(x: orientationLabel.frame.origin.x,
+                                                    y:orientationLabel.frame.origin.y-30)
+            let sideLength: CGFloat = Properties.portraitLockRatio*frame.size.width
+            let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height)
+            portraitLockView.frame = CGRect(origin: origin, size:
+            CGSize(width: sideLength, height: Properties.portraitLockHeight))
+            portraitPictureView = UIImageView(frame: portraitLockView.bounds)
+            portraitPictureView.image = UIImage(imageLiteral: "LockOff")
+            portraitPictureView.contentMode = .ScaleToFill
+            portraitLockView.addSubview(portraitPictureView)
+            portraitLockView.sendSubviewToBack(portraitPictureView)
+            self.addSubview(portraitLockView)
+            
+            UIView.animateWithDuration(1.0,
+                delay: 0.0,
+                usingSpringWithDamping: 0.9,
+                initialSpringVelocity: 15,
+                options: .CurveLinear,
+                animations: {
+                    self.portraitLockView.frame = CGRect(origin:
+                            CGPoint(x:self.portraitLockView.frame.origin.x,
+                            y: self.orientationLabel.frame.height +
+                            self.orientationLabel.frame.origin.y),
+                            size: self.portraitLockView.frame.size)
+                },
+                completion: { (didFinish: Bool) -> () in
+                    dispatch_async(dispatch_get_main_queue(), {
+                        if(didFinish){
+                            self.portraitPictureView.animationImages = [UIImage(imageLiteral: "LockOn"),
+                            UIImage(imageLiteral: "LockOff")]
+                            self.portraitPictureView.animationDuration = 2.0
+                            self.portraitPictureView.startAnimating()
+                        }
+                    })
+                }
+            )
+        //Add Arrow for flash introduction
+        case 2:
+            break
+        //Rotate to Film Screen
+        case 3:
+            //Configure UIView
+            let sideLength: CGFloat = Properties.phoneViewRatio*frame.size.width
+            let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height/2-sideLength/2)
+            phoneView.frame = CGRect(origin: origin, size: CGSize(width: sideLength, height: sideLength))
+            
+            //Add ImageView
+            let pictureView = UIImageView(frame: phoneView.bounds)
+            pictureView.image = UIImage(imageLiteral: "Phone")
+            pictureView.contentMode = .ScaleToFill
+            phoneView.addSubview(pictureView)
+            phoneView.sendSubviewToBack(pictureView)
+            phoneView.alpha = 0.75
+            self.addSubview(phoneView)
+            
+            //Animate
+            UIView.animateWithDuration(1.5, delay:0, options: [.Repeat], animations: {
+                self.phoneView.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
+                }, completion: nil)
+
+        default: break
+        }
+    }
+
+   
+    
     //MARK: Subview Properties
     struct Properties{
+        static let orientationLabelRatio: CGFloat = 3/4
+        static let portraitLockHeight: CGFloat = 300
+        static let portraitLockRatio: CGFloat = 2/3
+        static let okayButtonRatio: CGFloat = 7/8
         static let saveViewRatio: CGFloat = 3/4
         static let phoneViewRatio: CGFloat = 2/3
-        static let buttonSize = 75
-        static let buttonSizeF: CGFloat = 75
+        static let buttonHeight: CGFloat = 30
+        static let flashbuttonSize = 75
+        static let flashbuttonSizeF: CGFloat = 75
         static let labelHeightF: CGFloat = 25
         static let labelHeight = 25
         static let blackBarWidthF: CGFloat = 25

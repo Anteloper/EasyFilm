@@ -103,28 +103,32 @@ class FilmController: UIViewController,
                 startCapture(positiveRotation: true)
         }
         else if UIDevice.currentDevice().orientation == .LandscapeRight{
-            startCapture(positiveRotation: false)
+                startCapture(positiveRotation: false)
         }
         
         else if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)){
             if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-                overlay.didChangeToPortrait()
-                cameraController.stopVideoCapture()
-                cameraController.cameraFlashMode = .Off
+                if(!overlay.ongoingIntroduction){
+                    overlay.didChangeToPortrait()
+                    cameraController.stopVideoCapture()
+                    cameraController.cameraFlashMode = .Off
+                }
             }
         }
     }
     
     func startCapture(positiveRotation isPos: Bool){
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-            overlay.didBeginFilmingWithPositiveRotation(isPos)
-            if overlay.flashOn{
-                cameraController.cameraFlashMode = .On
+            if(!overlay.ongoingIntroduction){
+                overlay.didBeginFilmingWithPositiveRotation(isPos)
+                if overlay.flashOn{
+                    cameraController.cameraFlashMode = .On
+                }
+                else{
+                    cameraController.cameraFlashMode = .Off
+                }
+                cameraController.startVideoCapture()
             }
-            else{
-                cameraController.cameraFlashMode = .Off
-            }
-            cameraController.startVideoCapture()
         }
     }
     override func didReceiveMemoryWarning() {

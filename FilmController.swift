@@ -62,7 +62,7 @@ class FilmController: UIViewController,
         //add the overlay after the camera is displayed
         presentViewController(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
-            overlayView.setup(isFirstLaunch: true)
+            overlayView.setup(isFirstLaunch: self.isFirstLaunch)
         })
             
         return true
@@ -120,7 +120,6 @@ class FilmController: UIViewController,
     func startCapture(positiveRotation isPos: Bool){
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
             if(!overlay.ongoingIntroduction){
-                print(overlay.ongoingIntroduction)
                 overlay.didBeginFilmingWithPositiveRotation(isPos)
                 if overlay.flashOn{
                     cameraController.cameraFlashMode = .On

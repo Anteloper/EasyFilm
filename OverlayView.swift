@@ -36,7 +36,8 @@ class OverlayView: UIView {
             ongoingIntroduction = true
             firstLaunch()
         }
-        if !ongoingIntroduction{
+        else{
+            ongoingIntroduction = false
             configureFlashButton()
             self.addSubview(flash)
         }
@@ -79,7 +80,6 @@ class OverlayView: UIView {
         
         self.addSubview(blackbar)
         self.addSubview(textLabel)
-        print("beganfilmingaddedsubviews")
         
         //Animate
         UIView.animateWithDuration(1.0, animations: {
@@ -346,8 +346,8 @@ class OverlayView: UIView {
         textLabel.textAlignment = .Center
         textLabel.textColor = UIColor.whiteColor()
         self.bringSubviewToFront(textLabel)
-        print("submethod textlabel")
     }
+    
     func configureBlackBar(bbOrigin: CGPoint){
         blackbar.removeFromSuperview()
         blackbar = UIView(frame: CGRect(origin: bbOrigin, size:
@@ -355,8 +355,8 @@ class OverlayView: UIView {
         blackbar.backgroundColor = UIColor.blackColor()
         blackbar.alpha = 0.5
         self.bringSubviewToFront(blackbar)
-        print("submethod blackbar")
     }
+    
     func configureTimer(){
         timer.invalidate()
         counter = 0
@@ -366,6 +366,7 @@ class OverlayView: UIView {
             userInfo: nil,
             repeats: true)
     }
+    
     func configureFlashButton(){
         flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
         flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.flashbuttonSizeF/2,

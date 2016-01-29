@@ -94,8 +94,8 @@ class OverlayView: UIView {
                         animations: {self.circleView.alpha = 1.0},
                         completion: nil)
                 }
-                
-        })
+            }
+        )
     }
     
     //MARK: Flash Toggled
@@ -442,11 +442,11 @@ class OverlayView: UIView {
     struct Properties{
         static let upArrowViewRatio: CGFloat = 1/2
         static let orientationLabelRatio: CGFloat = 3/4
-        static let portraitLockHeight: CGFloat = 300
-        static let portraitLockRatio: CGFloat = 2/3
         static let okayButtonRatio: CGFloat = 7/8
         static let saveViewRatio: CGFloat = 3/4
         static let phoneViewRatio: CGFloat = 2/3
+        static let portraitLockRatio: CGFloat = 2/3
+        static let portraitLockHeight: CGFloat = 300
         static let buttonHeight: CGFloat = 30
         static let flashbuttonSize = 75
         static let flashbuttonSizeF: CGFloat = 75

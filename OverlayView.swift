@@ -53,6 +53,7 @@ class OverlayView: UIView {
         phoneView.removeFromSuperview()
         textLabel.removeFromSuperview()
         blackbar.removeFromSuperview()
+        circleView.removeFromSuperview()
         addSubview(flash)
     }
     
@@ -61,30 +62,39 @@ class OverlayView: UIView {
         isFilming = true
         //Configure local orientation-based variables
         var rotation = M_PI_2
-        var pFromTop: CGFloat = self.frame.width - Properties.labelHeightF
         var bbOrigin = CGPoint(x:self.frame.size.width-25, y:0)
-        var circleYValue: CGFloat = 200
+        var circleYValue: CGFloat = frame.size.height/2-55
         if !isPositive{
-            pFromTop = 0
             rotation = -M_PI_2
             bbOrigin = CGPointZero
-            circleYValue = 100
+            circleYValue = frame.size.height/2+55
         }
         clearViewFromIntroduction()
         configureBlackBar(bbOrigin)
         configureTimer()
-        configureTimerLabel(CGFloat(rotation))
+        configureTimerLabel(CGFloat(rotation), xPos: bbOrigin)
         configureRedCircle(circleYValue)
         
         self.addSubview(blackbar)
         self.addSubview(textLabel)
+        self.bringSubviewToFront(circleView)
         
         //Animate
         UIView.animateWithDuration(1.0, animations: {
-            self.textLabel.font = UIFont(name: Properties.font, size: Properties.timerFontSize)
             self.blackbar.alpha = 0.5
-            self.circleView.frame.origin = CGPoint(x:pFromTop, y:self.circleView.frame.origin.y)
-            self.textLabel.frame.origin = CGPoint(x:pFromTop, y: 0)
+            self.textLabel.alpha = 1.0
+            self.textLabel.frame = self.blackbar.frame
+            }, completion: { (isComplete) in
+                if(isComplete){
+                    UIView.animateWithDuration(0.5,
+                        delay: 0.0,
+                        options: [UIViewAnimationOptions.Repeat,
+                            UIViewAnimationOptions.Autoreverse,
+                            UIViewAnimationOptions.CurveEaseInOut],
+                        animations: {self.circleView.alpha = 1.0},
+                        completion: nil)
+                }
+                
         })
     }
     
@@ -232,15 +242,16 @@ class OverlayView: UIView {
     }
     
     //MARK: Subview Configurations
-    func configureTimerLabel(rotation: CGFloat){
+    func configureTimerLabel(rotation: CGFloat, xPos: CGPoint){
         textLabel.text = "00:00:00"
         self.textLabel.transform = CGAffineTransformMakeRotation(rotation)
-        textLabel.frame = CGRect(origin:
-            CGPoint(x: frame.size.width/2-Properties.labelHeightF-2, y: 0),
-            size: CGSize(width: Properties.labelHeightF, height: self.frame.maxY))
+        textLabel.frame = CGRect(origin: CGPoint(x:frame.size.width/2, y:0),size:blackbar.frame.size)
+        //textLabel.frame = blackbar.bounds
+        //textLabel.frame.origin = xPos
         textLabel.alpha = 1.0
         textLabel.textAlignment = .Center
         textLabel.textColor = UIColor.whiteColor()
+        self.textLabel.font = UIFont(name: Properties.font, size: Properties.timerFontSize)
         self.bringSubviewToFront(textLabel)
     }
     
@@ -272,16 +283,17 @@ class OverlayView: UIView {
     }
     
     func configureRedCircle(yValue: CGFloat){
-        circleView.frame = CGRect(origin: CGPoint(x: textLabel.frame.origin.x,
+        circleView.frame = CGRect(origin: CGPoint(x: (blackbar.frame.origin.x +
+                                  Properties.blackBarWidthF/2)-Properties.circleSizeF/2,
                                   y: yValue),
-                                  size: CGSize(width: Properties.blackBarWidthF,
-                                  height: Properties.blackBarWidthF))
-        circleView.alpha = 1.0
-
+                                  size: CGSize(width: Properties.circleSizeF,
+                                  height: Properties.circleSizeF))
+        circleView.alpha = 0.0
         let circleImage = UIImageView(frame: circleView.bounds)
         circleImage.image = UIImage(imageLiteral: "Circle")
         circleImage.contentMode = .ScaleToFill
         circleView.addSubview(circleImage)
+        self.bringSubviewToFront(circleView)
         self.addSubview(circleView)
         
         
@@ -443,6 +455,7 @@ class OverlayView: UIView {
         static let blackBarWidthF: CGFloat = 25
         static let timerFontSize: CGFloat = 24
         static let orientationFontSize: CGFloat = 30
+        static let circleSizeF : CGFloat = 8
         static let font = "Gill Sans"
     }
 }

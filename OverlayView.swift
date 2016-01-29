@@ -14,6 +14,7 @@ class OverlayView: UIView {
     //Flags for FilmController
     var flashOn = false
     var ongoingIntroduction = true
+    var isFilming = false
     //Global Variables
     private var phoneView = UIView()
     private var portraitLockView = UIView()
@@ -21,6 +22,7 @@ class OverlayView: UIView {
     private var orientationLabel = UILabel()
     private var textLabel = UILabel()
     private var counter : Int?
+    private var circleView = UIView()
     private var timer = NSTimer()
     private var blackbar = UIView()
     private var flash = UIButton()
@@ -45,6 +47,7 @@ class OverlayView: UIView {
     
     //MARK: Changed to portrait
     func didChangeToPortrait(){
+        isFilming = false
         timer.invalidate()
         textLabel.transform = CGAffineTransformMakeRotation(CGFloat(0))
         phoneView.removeFromSuperview()
@@ -55,20 +58,23 @@ class OverlayView: UIView {
     
     //MARK: Began Filming
     func didBeginFilmingWithPositiveRotation(isPositive: Bool){
-        
+        isFilming = true
         //Configure local orientation-based variables
         var rotation = M_PI_2
         var pFromTop: CGFloat = self.frame.width - Properties.labelHeightF
         var bbOrigin = CGPoint(x:self.frame.size.width-25, y:0)
+        var circleYValue: CGFloat = 200
         if !isPositive{
             pFromTop = 0
             rotation = -M_PI_2
             bbOrigin = CGPointZero
+            circleYValue = 100
         }
         clearViewFromIntroduction()
         configureBlackBar(bbOrigin)
         configureTimer()
         configureTimerLabel(CGFloat(rotation))
+        configureRedCircle(circleYValue)
         
         self.addSubview(blackbar)
         self.addSubview(textLabel)
@@ -77,8 +83,9 @@ class OverlayView: UIView {
         UIView.animateWithDuration(1.0, animations: {
             self.textLabel.font = UIFont(name: Properties.font, size: Properties.timerFontSize)
             self.blackbar.alpha = 0.5
-            self.textLabel.frame = CGRect(origin: CGPoint(x:pFromTop, y: 0),
-                size: self.textLabel.frame.size)})
+            self.circleView.frame.origin = CGPoint(x:pFromTop, y:self.circleView.frame.origin.y)
+            self.textLabel.frame.origin = CGPoint(x:pFromTop, y: 0)
+        })
     }
     
     //MARK: Flash Toggled
@@ -263,6 +270,22 @@ class OverlayView: UIView {
             size: CGSize(width: Properties.flashbuttonSize, height: Properties.flashbuttonSize))
         flash.addTarget(self, action: "flashPressed", forControlEvents: .TouchUpInside)
     }
+    
+    func configureRedCircle(yValue: CGFloat){
+        circleView.frame = CGRect(origin: CGPoint(x: textLabel.frame.origin.x,
+                                  y: yValue),
+                                  size: CGSize(width: Properties.blackBarWidthF,
+                                  height: Properties.blackBarWidthF))
+        circleView.alpha = 1.0
+
+        let circleImage = UIImageView(frame: circleView.bounds)
+        circleImage.image = UIImage(imageLiteral: "Circle")
+        circleImage.contentMode = .ScaleToFill
+        circleView.addSubview(circleImage)
+        self.addSubview(circleView)
+        
+        
+    }
     func clearViewFromIntroduction(){
         flash.removeFromSuperview()
         phoneView.removeFromSuperview()
@@ -272,6 +295,7 @@ class OverlayView: UIView {
         okayButton.removeFromSuperview()
         self.backgroundColor = UIColor.clearColor()
     }
+    
     //MARK: Orientation Screens
     func firstScreen(){
         whichWelcomeScreen++

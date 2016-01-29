@@ -53,6 +53,7 @@ class FilmController: UIViewController,
         cameraController.showsCameraControls = false
         cameraController.allowsEditing = false
         cameraController.delegate = delegate
+        cameraController.videoQuality = UIImagePickerControllerQualityType.TypeHigh
 
         //custom view configuration
         let overlayController = OverlayViewController(nibName: "OverlayViewController", bundle: nil)
@@ -119,7 +120,7 @@ class FilmController: UIViewController,
     
     func startCapture(positiveRotation isPos: Bool){
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-            if(!overlay.ongoingIntroduction){
+            if(!overlay.ongoingIntroduction && !overlay.isFilming){
                 overlay.didBeginFilmingWithPositiveRotation(isPos)
                 if overlay.flashOn{
                     cameraController.cameraFlashMode = .On

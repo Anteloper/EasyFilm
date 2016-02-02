@@ -29,6 +29,8 @@ class OverlayView: UIView {
     private var okayButton = UIButton()
     private var whichWelcomeScreen = 0
     private var portraitPictureView = UIImageView()
+    private var focusView = UIView()
+    private var saveView = UIView()
     
     
     //MARK: Setup
@@ -121,41 +123,6 @@ class OverlayView: UIView {
         )
     }
     
-    //MARK: Video Saved
-    func didSaveVideoSuccesfully(){
-        //Configure UIView
-        let saveView = UIView()
-        let sideLength: CGFloat = Properties.saveViewRatio*frame.size.width
-        let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height/2-sideLength/2)
-        saveView.frame = CGRect(origin: origin, size: CGSize(width: sideLength, height: sideLength))
-        
-        //Add ImageView
-        let checkView = UIImageView(frame: saveView.bounds)
-        checkView.image = UIImage(imageLiteral: "Check")
-        checkView.contentMode = .ScaleToFill
-        saveView.addSubview(checkView)
-        saveView.sendSubviewToBack(checkView)
-        saveView.alpha = 0.0
-        self.addSubview(saveView)
-        
-        //Animate
-        saveView.transform = CGAffineTransformMakeScale(0,0)
-        UIView.animateWithDuration(0.75,
-            delay: 0.0,
-            usingSpringWithDamping: 0.5,
-            initialSpringVelocity: 15,
-            options: .CurveLinear,
-            animations: {
-                saveView.alpha = 0.75
-                saveView.transform = CGAffineTransformIdentity
-            },
-            completion: { (didComplete: Bool) in
-                if(didComplete){
-                    UIView.animateWithDuration(0.75, animations: {saveView.alpha = 0.0} )
-                }
-            }
-        )
-    }
     
     //MARK: Timer
     func updateCounter(){
@@ -176,78 +143,43 @@ class OverlayView: UIView {
             textLabel.text = "00:0" + String(minutes) + ":" + secondsString
         }
     }
-
     
-    //MARK: First Launch
-    func firstLaunch(){
-        backgroundColor = UIColor.whiteColor()
-        alpha = 0.85
-        
-        self.flash.removeFromSuperview()
-        
-        //Configure Orientation Label
-        orientationLabel.text = "Welcome!\n\n\n We see you're new so here's a quick run down."
-        let labelWidth: CGFloat = Properties.orientationLabelRatio*frame.size.width
-        let lOrigin = CGPoint(x:frame.size.width/2-labelWidth/2, y:frame.height/8)
-        orientationLabel.frame = CGRect(origin: lOrigin,
-        size: CGSize(width: labelWidth, height: 300))
-        orientationLabel.font = UIFont(name: Properties.font, size: Properties.orientationFontSize)
-        orientationLabel.numberOfLines = 0
-        orientationLabel.textAlignment = .Center
-        orientationLabel.lineBreakMode = .ByWordWrapping
-        orientationLabel.textColor = UIColor(red: 51/255.0,
-                                            green: 89/255.0,
-                                            blue: 254/255.0,
-                                            alpha: 0.75)
-        self.bringSubviewToFront(orientationLabel)
-        self.addSubview(orientationLabel)
-        
-        //Configure Okay Button
-        okayButton.setAttributedTitle(NSAttributedString(string: "Okay"), forState: .Normal)
-        okayButton.backgroundColor = orientationLabel.textColor
-        let buttonWidth: CGFloat = Properties.okayButtonRatio*frame.size.width
-        let bOrigin = CGPoint(x: frame.size.width/2-buttonWidth/2, y: (frame.height*7)/8)
-        okayButton.titleLabel!.font = UIFont(name: Properties.font, size: 18)
-        okayButton.tintColor = UIColor.whiteColor()
-        okayButton.setTitleColor(UIColor.whiteColor(), forState:  .Normal)
-        okayButton.frame = CGRect(origin: bOrigin,
-                                  size: CGSize(width:
-                                  buttonWidth,
-                                  height: Properties.buttonHeight))
-        okayButton.addTarget(self, action: "nextScreen", forControlEvents: .TouchUpInside)
-        self.addSubview(okayButton)
-        whichWelcomeScreen++
-    }
-
-    func nextScreen(){
-        switch(whichWelcomeScreen)
-        {
-        //Add Pictures for Orientation Lock
-        case 1:
-            firstScreen()
-        //Add arrow for flash introduction
-        case 2:
-            secondScreen()
-        //Rotate to film screen
-        case 3:
-            thirdScreen()
-        //Happy filming screen
-        case 4:
-            fourthScreen()
-        //Clear screen
-        case 5:
-            fifthScreen()
-        default: break
+    //MARK: Touches Began
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        if !ongoingIntroduction && (event?.allTouches()!.count)! == 1{
+ 
+            if let touch: UITouch = touches.first!{
+                focusView.removeFromSuperview()
+                let centerPoint = touch.locationInView(self)
+                configureFocusView(centerPoint)
+                self.addSubview(focusView)
+                UIView.animateWithDuration(1.0,
+                    delay: 0.0,
+                    usingSpringWithDamping: 0.4,
+                    initialSpringVelocity: 10,
+                    options: [UIViewAnimationOptions.CurveEaseInOut],
+                    animations: {self.focusView.transform = CGAffineTransformMakeScale(0.5, 0.5)},
+                    completion: { (didComplete) in
+                        if(didComplete){
+                            UIView.animateWithDuration(1.0,
+                                delay: 0.0,
+                                options: [],
+                                animations: {self.focusView.alpha = 0.0},
+                                completion: nil
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
+    
     
     //MARK: Subview Configurations
     func configureTimerLabel(rotation: CGFloat, xPos: CGPoint){
         textLabel.text = "00:00:00"
         self.textLabel.transform = CGAffineTransformMakeRotation(rotation)
         textLabel.frame = CGRect(origin: CGPoint(x:frame.size.width/2, y:0),size:blackbar.frame.size)
-        //textLabel.frame = blackbar.bounds
-        //textLabel.frame.origin = xPos
         textLabel.alpha = 1.0
         textLabel.textAlignment = .Center
         textLabel.textColor = UIColor.whiteColor()
@@ -283,12 +215,23 @@ class OverlayView: UIView {
     }
     
     func configureRedCircle(yValue: CGFloat){
-        circleView.frame = CGRect(origin: CGPoint(x: (blackbar.frame.origin.x +
-                                  Properties.blackBarWidthF/2)-Properties.circleSizeF/2,
-                                  y: yValue),
-                                  size: CGSize(width: Properties.circleSizeF,
-                                  height: Properties.circleSizeF))
+        circleView.removeFromSuperview()
+        if !ongoingIntroduction{
+            circleView.frame = CGRect(origin: CGPoint(x: (blackbar.frame.origin.x +
+                                Properties.blackBarWidthF/2)-Properties.circleSizeF/2,
+                                y: yValue), size:
+                                CGSize(width: Properties.circleSizeF,
+                                height: Properties.circleSizeF))
+        }
+            
+        else{
+            /*circleView.frame = CGRect(origin:CGPoint(x: phoneView.center.x - Properties.circleSizeF,
+                y: phoneView.center.y - Properties.circleSizeF), size:
+                CGSize(width:Properties.circleSizeF*2, height: Properties.circleSizeF*2))*/
+        }
+        
         circleView.alpha = 0.0
+        //USED TO BE .BOUNDS TODO
         let circleImage = UIImageView(frame: circleView.bounds)
         circleImage.image = UIImage(imageLiteral: "Circle")
         circleImage.contentMode = .ScaleToFill
@@ -298,6 +241,54 @@ class OverlayView: UIView {
         
         
     }
+    
+    func configureFocusView(centerPoint: CGPoint){
+        focusView = UIView(frame: CGRect(origin: CGPoint(x:centerPoint.x-(Properties.focusBeginSizeF/2),
+            y: centerPoint.y - Properties.focusBeginSizeF/2),
+            size: CGSize(width: Properties.focusBeginSizeF,
+            height: Properties.focusBeginSizeF)))
+        let focusImageView = UIImageView(frame: focusView.bounds)
+        focusImageView.image = UIImage(imageLiteral: "Focus")
+        focusImageView.contentMode = .ScaleToFill
+        focusView.addSubview(focusImageView)
+        focusView.alpha = 0.6
+        self.bringSubviewToFront(focusView)
+    }
+    func configureAndAnimateSaveView(){
+        //Configure UIView
+        let sideLength: CGFloat = Properties.saveViewRatio*frame.size.width
+        let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height/2-sideLength/2)
+        saveView.frame = CGRect(origin: origin, size: CGSize(width: sideLength, height: sideLength))
+        
+        //Add ImageView
+        let checkView = UIImageView(frame: saveView.bounds)
+        checkView.image = UIImage(imageLiteral: "Check")
+        checkView.contentMode = .ScaleToFill
+        saveView.addSubview(checkView)
+        saveView.sendSubviewToBack(checkView)
+        saveView.alpha = 0.75
+        self.addSubview(saveView)
+        
+        
+        //Animate
+        saveView.transform = CGAffineTransformMakeScale(0,0)
+        UIView.animateWithDuration(0.75,
+            delay: 0.0,
+            usingSpringWithDamping: 0.5,
+            initialSpringVelocity: 15,
+            options: .CurveLinear,
+            animations: {
+                self.saveView.transform = CGAffineTransformIdentity
+            },
+            completion: { (didComplete: Bool) in
+                if(didComplete){
+                    UIView.animateWithDuration(1.0, animations: {self.saveView.alpha = 0.0} )
+                }
+            }
+        )
+
+    }
+    
     func clearViewFromIntroduction(){
         flash.removeFromSuperview()
         phoneView.removeFromSuperview()
@@ -308,6 +299,76 @@ class OverlayView: UIView {
         self.backgroundColor = UIColor.clearColor()
     }
     
+    
+    //MARK: First Launch
+    func firstLaunch(){
+        backgroundColor = UIColor.whiteColor()
+        alpha = 0.85
+        
+        self.flash.removeFromSuperview()
+        
+        //Configure Orientation Label
+        orientationLabel.text = "Welcome!\n\n\n We see you're new so here's a quick run down."
+        let labelWidth: CGFloat = Properties.orientationLabelRatio*frame.size.width
+        let lOrigin = CGPoint(x:frame.size.width/2-labelWidth/2, y:frame.height/8)
+        orientationLabel.frame = CGRect(origin: lOrigin,
+            size: CGSize(width: labelWidth, height: 300))
+        orientationLabel.font = UIFont(name: Properties.font, size: Properties.orientationFontSize)
+        orientationLabel.numberOfLines = 0
+        orientationLabel.textAlignment = .Center
+        orientationLabel.lineBreakMode = .ByWordWrapping
+        orientationLabel.textColor = UIColor(red: 51/255.0,
+            green: 89/255.0,
+            blue: 254/255.0,
+            alpha: 0.75)
+        self.bringSubviewToFront(orientationLabel)
+        self.addSubview(orientationLabel)
+        
+        //Configure Okay Button
+        okayButton.setAttributedTitle(NSAttributedString(string: "Okay"), forState: .Normal)
+        okayButton.backgroundColor = orientationLabel.textColor
+        let buttonWidth: CGFloat = Properties.okayButtonRatio*frame.size.width
+        let bOrigin = CGPoint(x: frame.size.width/2-buttonWidth/2, y: (frame.height*7)/8)
+        okayButton.titleLabel!.font = UIFont(name: Properties.font, size: 18)
+        okayButton.tintColor = UIColor.whiteColor()
+        okayButton.setTitleColor(UIColor.whiteColor(), forState:  .Normal)
+        okayButton.frame = CGRect(origin: bOrigin,
+            size: CGSize(width:
+                buttonWidth,
+                height: Properties.buttonHeight))
+        okayButton.addTarget(self, action: "nextScreen", forControlEvents: .TouchUpInside)
+        self.addSubview(okayButton)
+        whichWelcomeScreen++
+    }
+    
+    func nextScreen(){
+        switch(whichWelcomeScreen)
+        {
+            //Add Pictures for Orientation Lock
+        case 1:
+            firstScreen()
+            //Add arrow for flash introduction
+        case 2:
+            secondScreen()
+            //Rotate to film screen
+        case 3:
+            thirdScreen()
+            //Rotate to stop screen
+        case 4:
+            fourthScreen()
+            //Check mark screen
+        case 5:
+            fifthScreen()
+        case 6:
+            sixthScreen()
+            //Happy filming screen
+        case 7:
+            seventhScreen()
+            //Clear screen
+        default: break
+        }
+    }
+
     //MARK: Orientation Screens
     func firstScreen(){
         whichWelcomeScreen++
@@ -376,21 +437,19 @@ class OverlayView: UIView {
         configureFlashButton()
         addSubview(upArrowView)
         addSubview(flash)
-        UIView.animateWithDuration(0.5,
-            animations: {self.orientationLabel.alpha = 1.0},
-            completion: { (didComplete) -> Void in
-                UIView.animateWithDuration(0.5,
-                    delay: 0.0,
-                    usingSpringWithDamping: 0.5,
-                    initialSpringVelocity: 10,
-                    options: [],
-                    animations: {
-                        self.upArrowView.frame.origin =
-                            CGPoint(x:self.frame.width/2 - sideLength/2,
-                                y:self.frame.height/2 - sideLength/2)
-                    },
-                    completion: nil)
-        })
+        UIView.animateWithDuration(0.75, animations: {self.orientationLabel.alpha = 0.75})
+        UIView.animateWithDuration(0.3,
+                delay: 0.3,
+                usingSpringWithDamping: 0.5,
+                initialSpringVelocity: 10,
+                options: [],
+                animations: {
+                    self.upArrowView.frame.origin =
+                        CGPoint(x:self.frame.width/2 - sideLength/2,
+                        y:self.frame.height/2 - sideLength/2)
+                },
+                completion: nil
+        )
     }
     
     func thirdScreen(){
@@ -412,32 +471,75 @@ class OverlayView: UIView {
         phoneView.addSubview(pictureView)
         phoneView.sendSubviewToBack(pictureView)
         self.addSubview(phoneView)
-        ongoingIntroduction = false
+
         
         //Animate
         UIView.animateWithDuration(0.75, animations: {self.orientationLabel.alpha = 0.75})
-        UIView.animateWithDuration(1.5, delay:0.75, options: [.Repeat], animations: {
+        UIView.animateWithDuration(1.5, delay: 0.75, options: [], animations: {
             self.orientationLabel.alpha = 0.75
             self.phoneView.transform = CGAffineTransformMakeRotation(CGFloat(-M_PI_2))
-            }, completion: nil)
+            }, completion: { (didComplete) in
+                if didComplete{
+                    self.configureRedCircle(self.frame.height/2)
+                    self.addSubview(self.circleView)
+                    UIView.animateWithDuration(0.5,
+                        delay: 0.0,
+                        options: [UIViewAnimationOptions.Repeat,
+                            UIViewAnimationOptions.Autoreverse,
+                            UIViewAnimationOptions.CurveEaseInOut],
+                        animations: {self.circleView.alpha = 1.0},
+                        completion: nil)
+                }
+            }
+        )
     }
     
     func fourthScreen(){
         whichWelcomeScreen++
-        phoneView.removeFromSuperview()
-        self.orientationLabel.font = UIFont(name: Properties.font, size: 38)
-        self.orientationLabel.frame.origin = CGPoint(x:self.orientationLabel.frame.origin.x,
-            y:self.frame.height/2-self.orientationLabel.frame.size.height/2)
-        self.orientationLabel.alpha = 0.0
-        orientationLabel.text = "Happy Filming!"
-        UIView.animateWithDuration(1.0, animations: { self.orientationLabel.alpha = 1.0})
+        circleView.removeFromSuperview()
+        orientationLabel.text = "Rotate back to finish"
+        UIView.animateWithDuration(1.0,
+            delay: 0.3,
+            options: [],
+            animations: { self.phoneView.transform = CGAffineTransformMakeRotation(CGFloat(0))},
+            completion: nil)
+        
     }
     
     func fifthScreen(){
+        whichWelcomeScreen++
+        phoneView.removeFromSuperview()
+        orientationLabel.frame.origin = CGPoint(x: orientationLabel.frame.origin.x,
+            y: orientationLabel.frame.origin.y + 30)
+        orientationLabel.alpha = 0.0
+        orientationLabel.text = "You'll see the check when your video saves."
+        UIView.animateWithDuration(0.5,
+            animations: {self.orientationLabel.alpha = 0.75},
+            completion: {(didComplete) in
+                if(didComplete){
+                    self.configureAndAnimateSaveView()
+                }
+            }
+        )
+    }
+    func sixthScreen(){
+        whichWelcomeScreen++
+        self.orientationLabel.font = UIFont(name: Properties.font, size: 38)
+        self.orientationLabel.frame.origin = CGPoint(x:self.orientationLabel.frame.origin.x,
+            y:self.frame.height/2-self.orientationLabel.frame.size.height/2-20)
+        self.orientationLabel.alpha = 0.0
+        orientationLabel.text = "Thats it!\n Happy Filming"
+        UIView.animateWithDuration(0.5, animations: { self.orientationLabel.alpha = 0.75})
+
+    }
+    func seventhScreen(){
         backgroundColor = UIColor.clearColor()
+        circleView.removeFromSuperview()
         okayButton.removeFromSuperview()
         orientationLabel.removeFromSuperview()
+        ongoingIntroduction = false
     }
+    
     //MARK: Subview Properties
     struct Properties{
         static let upArrowViewRatio: CGFloat = 1/2
@@ -456,6 +558,7 @@ class OverlayView: UIView {
         static let timerFontSize: CGFloat = 24
         static let orientationFontSize: CGFloat = 30
         static let circleSizeF : CGFloat = 8
+        static let focusBeginSizeF : CGFloat = 240
         static let font = "Gill Sans"
     }
 }

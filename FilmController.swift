@@ -83,9 +83,10 @@ class FilmController: UIViewController,
         }
     }
     
+    
     func video(videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-            overlay.didSaveVideoSuccesfully()
+            overlay.configureAndAnimateSaveView()
         }
     }
     
@@ -99,6 +100,7 @@ class FilmController: UIViewController,
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
+    //MARK: Rotation Handling
     func rotated(){
         if UIDevice.currentDevice().orientation == .LandscapeLeft{
                 startCapture(positiveRotation: true)
@@ -110,9 +112,11 @@ class FilmController: UIViewController,
         else if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)){
             if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
                 if(!overlay.ongoingIntroduction){
-                    overlay.didChangeToPortrait()
-                    cameraController.stopVideoCapture()
-                    cameraController.cameraFlashMode = .Off
+                    if overlay.isFilming{
+                        cameraController.stopVideoCapture()
+                        cameraController.cameraFlashMode = .Off
+                        overlay.didChangeToPortrait()
+                    }
                 }
             }
         }
@@ -131,8 +135,5 @@ class FilmController: UIViewController,
                 cameraController.startVideoCapture()
             }
         }
-    }
-    override func didReceiveMemoryWarning() {
-        print("help")
     }
 }

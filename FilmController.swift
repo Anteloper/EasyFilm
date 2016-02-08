@@ -44,13 +44,13 @@ class FilmController: UIViewController,
                 (accelDataMaybe, error) in
                 if let accelData: CMAccelerometerData = accelDataMaybe{
                     let xrotation = accelData.acceleration.x
-                    if(abs(xrotation) <= 0.7){
+                    if(abs(xrotation) <= 0.6){
                         self.portrait()
                     }
-                    else if(xrotation < -0.7){
+                    else if(xrotation < -0.6){
                         self.landscape(positiveRotation: true)
                     }
-                    else if(xrotation > 0.7){
+                    else if(xrotation > 0.6){
                         self.landscape(positiveRotation: false)
                     }
                 }

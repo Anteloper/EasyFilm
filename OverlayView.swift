@@ -316,7 +316,7 @@ class OverlayView: UIView {
         
         //Configure Okay Button
         okayButton.setAttributedTitle(NSAttributedString(string: "Okay"), forState: .Normal)
-        okayButton.backgroundColor = orientationLabel.textColor
+        okayButton.backgroundColor = Properties.iconColor
         let buttonWidth: CGFloat = Properties.okayButtonRatio*frame.size.width
         let bOrigin = CGPoint(x: frame.size.width/2-buttonWidth/2, y: (frame.height*7)/8)
         okayButton.titleLabel!.font = UIFont(name: Properties.font, size: 18)
@@ -381,7 +381,7 @@ class OverlayView: UIView {
             size: CGSize(width: sideLength,
                 height: sideLength))
         let arrowImageView = UIImageView(frame: upArrowView.bounds)
-        arrowImageView.image = UIImage(imageLiteral: "UpArrow")
+        arrowImageView.image = UIImage(imageLiteral: "Arrow")
         arrowImageView.contentMode = .ScaleToFill
         arrowImageView.alpha = 1.0
         upArrowView.addSubview(arrowImageView)
@@ -486,7 +486,7 @@ class OverlayView: UIView {
         whichWelcomeScreen++
         self.orientationLabel.font = UIFont(name: Properties.font, size: 38)
         self.orientationLabel.frame.origin = CGPoint(x:self.orientationLabel.frame.origin.x,
-            y:self.frame.height/2-self.orientationLabel.frame.size.height/2-20)
+            y:self.frame.height/2-self.orientationLabel.frame.size.height/2-40)
         self.orientationLabel.alpha = 0.0
         orientationLabel.text = "That's it!\n Happy Filming"
         UIView.animateWithDuration(0.5, animations: { self.orientationLabel.alpha = 0.75})
@@ -523,7 +523,6 @@ class OverlayView: UIView {
         static let circleSizeF : CGFloat = 8
         static let focusBeginSizeF : CGFloat = 240
         static let font = "Gill Sans"
-        static let themeColor = UIColor(red: 51/255.0, green: 89/255.0, blue: 254/255.0, alpha: 0.75)
         static let iconColor = UIColor(red: 19/255.0,green: 157/255.0, blue: 234/255.0, alpha: 1.0)
     }
 }

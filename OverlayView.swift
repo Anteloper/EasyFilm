@@ -280,7 +280,6 @@ class OverlayView: UIView {
                 }
             }
         )
-
     }
     
     func clearViewFromIntroduction(){
@@ -327,6 +326,7 @@ class OverlayView: UIView {
                 buttonWidth,
                 height: Properties.buttonHeight))
         okayButton.addTarget(self, action: "nextScreen", forControlEvents: .TouchUpInside)
+        okayButton.alpha = 0.75
         self.addSubview(okayButton)
         whichWelcomeScreen++
     }
@@ -334,7 +334,6 @@ class OverlayView: UIView {
     func nextScreen(){
         switch(whichWelcomeScreen)
         {
-           
         case 1:
             //Add arrow for flash introduction
             firstScreen()
@@ -371,25 +370,32 @@ class OverlayView: UIView {
         orientationLabel.frame = CGRect(origin: CGPoint(x: orientationLabel.frame.origin.x,
             y:orientationLabel.frame.origin.y-30),
             size: CGSize(width: orientationLabel.frame.size.width,
-                height: 100))
+            height: 100))
         orientationLabel.font = UIFont(name: Properties.font, size: Properties.orientationFontSize-3)
-
+        
+        //Configure UIView
         let sideLength = frame.width*Properties.upArrowViewRatio
         upArrowView.frame = CGRect(origin:
             CGPoint(x:frame.width,
                 y:frame.height/2 - sideLength/2),
             size: CGSize(width: sideLength,
                 height: sideLength))
+       
+        //Add ImageView
         let arrowImageView = UIImageView(frame: upArrowView.bounds)
         arrowImageView.image = UIImage(imageLiteral: "Arrow")
         arrowImageView.contentMode = .ScaleToFill
         arrowImageView.alpha = 1.0
         upArrowView.addSubview(arrowImageView)
+        
+        //Update Orientation Label
         orientationLabel.text = "Toggle flash here"
         orientationLabel.frame.origin = CGPoint(x:orientationLabel.frame.origin.x,
             y: orientationLabel.frame.origin.y+50)
         orientationLabel.textAlignment = .Center
         orientationLabel.alpha = 0.0
+        
+        //Add and Animate
         configureFlashButton()
         addSubview(upArrowView)
         addSubview(flash)
@@ -480,6 +486,7 @@ class OverlayView: UIView {
             }
         )
     }
+    
     func fifthScreen(){
         flash.removeFromSuperview()
         saveView.removeFromSuperview()

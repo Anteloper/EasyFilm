@@ -4,17 +4,19 @@
 //
 //  Created by Oliver Hill on 1/18/16.
 //  Copyright © 2016 Oliver Hill. All rights reserved.
-//
+
 
 import UIKit
 
 class OverlayView: UIView {
     
     //MARK: Properties
+    
     //Flags for FilmController
     var flashOn = false
     var ongoingIntroduction = true
     var isFilming = false
+    
     //Global Variables
     private var phoneView = UIView()
     private var portraitLockView = UIView()
@@ -125,6 +127,7 @@ class OverlayView: UIView {
     
     
     //MARK: Timer
+    //Todo fix force unwrapping
     func updateCounter(){
         counter!++
         if counter! < 10{
@@ -209,8 +212,8 @@ class OverlayView: UIView {
     func configureFlashButton(){
         flash.setBackgroundImage(UIImage(imageLiteral: "FlashEmpty"), forState: .Normal)
         flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.flashbuttonSizeF/2,
-            y: frame.size.height/10),
-            size: CGSize(width: Properties.flashbuttonSize, height: Properties.flashbuttonSize))
+            y: frame.size.height/12),
+            size: CGSize(width: Properties.flashbuttonSize, height: Properties.flashbuttonSize*2))
         flash.addTarget(self, action: "flashPressed", forControlEvents: .TouchUpInside)
     }
     
@@ -223,15 +226,7 @@ class OverlayView: UIView {
                                 CGSize(width: Properties.circleSizeF,
                                 height: Properties.circleSizeF))
         }
-            
-        else{
-            /*circleView.frame = CGRect(origin:CGPoint(x: phoneView.center.x - Properties.circleSizeF,
-                y: phoneView.center.y - Properties.circleSizeF), size:
-                CGSize(width:Properties.circleSizeF*2, height: Properties.circleSizeF*2))*/
-        }
-        
         circleView.alpha = 0.0
-        //USED TO BE .BOUNDS TODO
         let circleImage = UIImageView(frame: circleView.bounds)
         circleImage.image = UIImage(imageLiteral: "Circle")
         circleImage.contentMode = .ScaleToFill
@@ -254,6 +249,7 @@ class OverlayView: UIView {
         focusView.alpha = 0.6
         self.bringSubviewToFront(focusView)
     }
+    
     func configureAndAnimateSaveView(){
         //Configure UIView
         let sideLength: CGFloat = Properties.saveViewRatio*frame.size.width
@@ -281,7 +277,7 @@ class OverlayView: UIView {
                 self.saveView.transform = CGAffineTransformIdentity
             },
             completion: { (didComplete: Bool) in
-                if(didComplete){
+                if(didComplete && !self.ongoingIntroduction){
                     UIView.animateWithDuration(1.0, animations: {self.saveView.alpha = 0.0} )
                 }
             }
@@ -317,10 +313,7 @@ class OverlayView: UIView {
         orientationLabel.numberOfLines = 0
         orientationLabel.textAlignment = .Center
         orientationLabel.lineBreakMode = .ByWordWrapping
-        orientationLabel.textColor = UIColor(red: 51/255.0,
-            green: 89/255.0,
-            blue: 254/255.0,
-            alpha: 0.75)
+        orientationLabel.textColor = Properties.themeColor
         self.bringSubviewToFront(orientationLabel)
         self.addSubview(orientationLabel)
         
@@ -457,6 +450,7 @@ class OverlayView: UIView {
         upArrowView.removeFromSuperview()
         orientationLabel.text = "Rotate to Film"
         orientationLabel.alpha = 0.0
+        
         //Configure UIView
         let sideLength: CGFloat = Properties.phoneViewRatio*frame.size.width
         let origin = CGPoint(x:frame.size.width/2-sideLength/2,
@@ -523,12 +517,13 @@ class OverlayView: UIView {
         )
     }
     func sixthScreen(){
+        flash.removeFromSuperview()
         whichWelcomeScreen++
         self.orientationLabel.font = UIFont(name: Properties.font, size: 38)
         self.orientationLabel.frame.origin = CGPoint(x:self.orientationLabel.frame.origin.x,
             y:self.frame.height/2-self.orientationLabel.frame.size.height/2-20)
         self.orientationLabel.alpha = 0.0
-        orientationLabel.text = "Thats it!\n Happy Filming"
+        orientationLabel.text = "That's it!\n Happy Filming"
         UIView.animateWithDuration(0.5, animations: { self.orientationLabel.alpha = 0.75})
 
     }
@@ -538,7 +533,10 @@ class OverlayView: UIView {
         okayButton.removeFromSuperview()
         orientationLabel.removeFromSuperview()
         ongoingIntroduction = false
+        
+        
     }
+    
     
     //MARK: Subview Properties
     struct Properties{
@@ -550,8 +548,8 @@ class OverlayView: UIView {
         static let portraitLockRatio: CGFloat = 2/3
         static let portraitLockHeight: CGFloat = 300
         static let buttonHeight: CGFloat = 30
-        static let flashbuttonSize = 75
-        static let flashbuttonSizeF: CGFloat = 75
+        static let flashbuttonSize = 37
+        static let flashbuttonSizeF: CGFloat = 45
         static let labelHeightF: CGFloat = 25
         static let labelHeight = 25
         static let blackBarWidthF: CGFloat = 25
@@ -560,5 +558,7 @@ class OverlayView: UIView {
         static let circleSizeF : CGFloat = 8
         static let focusBeginSizeF : CGFloat = 240
         static let font = "Gill Sans"
+        static let themeColor = UIColor(red: 51/255.0, green: 89/255.0, blue: 254/255.0, alpha: 0.75)
+        static let iconColor = UIColor(red: 19/255.0,green: 157/255.0, blue: 234/255.0, alpha: 1.0)
     }
 }

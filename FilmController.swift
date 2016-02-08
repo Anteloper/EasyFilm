@@ -44,13 +44,13 @@ class FilmController: UIViewController,
                 (accelDataMaybe, error) in
                 if let accelData: CMAccelerometerData = accelDataMaybe{
                     let xrotation = accelData.acceleration.x
-                    if(abs(xrotation) <= 0.8){
+                    if(abs(xrotation) <= 0.7){
                         self.portrait()
                     }
-                    else if(xrotation < -0.8){
+                    else if(xrotation < -0.7){
                         self.landscape(positiveRotation: true)
                     }
-                    else if(xrotation > 0.8){
+                    else if(xrotation > 0.7){
                         self.landscape(positiveRotation: false)
                     }
                 }
@@ -84,7 +84,8 @@ class FilmController: UIViewController,
         //Add the overlay after the camera is displayed
         presentViewController(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
-            overlayView.setup(isFirstLaunch: self.isFirstLaunch)
+            //todo
+            overlayView.setup(isFirstLaunch: true)
         })
             
         return true

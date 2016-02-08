@@ -19,7 +19,6 @@ class OverlayView: UIView {
     
     //Global Variables
     private var phoneView = UIView()
-    private var portraitLockView = UIView()
     private var upArrowView = UIView()
     private var orientationLabel = UILabel()
     private var textLabel = UILabel()
@@ -30,7 +29,6 @@ class OverlayView: UIView {
     private var flash = UIButton()
     private var okayButton = UIButton()
     private var whichWelcomeScreen = 0
-    private var portraitPictureView = UIImageView()
     private var focusView = UIView()
     private var saveView = UIView()
     
@@ -288,7 +286,6 @@ class OverlayView: UIView {
     func clearViewFromIntroduction(){
         flash.removeFromSuperview()
         phoneView.removeFromSuperview()
-        portraitLockView.removeFromSuperview()
         upArrowView.removeFromSuperview()
         orientationLabel.removeFromSuperview()
         okayButton.removeFromSuperview()
@@ -313,7 +310,7 @@ class OverlayView: UIView {
         orientationLabel.numberOfLines = 0
         orientationLabel.textAlignment = .Center
         orientationLabel.lineBreakMode = .ByWordWrapping
-        orientationLabel.textColor = Properties.themeColor
+        orientationLabel.textColor = Properties.iconColor
         self.bringSubviewToFront(orientationLabel)
         self.addSubview(orientationLabel)
         
@@ -337,80 +334,46 @@ class OverlayView: UIView {
     func nextScreen(){
         switch(whichWelcomeScreen)
         {
-            //Add Pictures for Orientation Lock
+           
         case 1:
-            firstScreen()
             //Add arrow for flash introduction
+            firstScreen()
+            
         case 2:
+             //Rotate to film screen
             secondScreen()
-            //Rotate to film screen
+           
         case 3:
-            thirdScreen()
             //Rotate to stop screen
+            thirdScreen()
+            
         case 4:
-            fourthScreen()
             //Check mark screen
+            fourthScreen()
+            
         case 5:
-            fifthScreen()
-        case 6:
-            sixthScreen()
             //Happy filming screen
-        case 7:
-            seventhScreen()
+            fifthScreen()
+        
+        case 6:
             //Clear screen
+            sixthScreen()
+    
         default: break
         }
     }
 
     //MARK: Orientation Screens
+
+    
     func firstScreen(){
         whichWelcomeScreen++
-        orientationLabel.text = "Make sure portrait orientation lock is off"
         orientationLabel.frame = CGRect(origin: CGPoint(x: orientationLabel.frame.origin.x,
             y:orientationLabel.frame.origin.y-30),
             size: CGSize(width: orientationLabel.frame.size.width,
                 height: 100))
         orientationLabel.font = UIFont(name: Properties.font, size: Properties.orientationFontSize-3)
-        let sideLength: CGFloat = Properties.portraitLockRatio*frame.size.width
-        let origin = CGPoint(x:frame.size.width/2-sideLength/2, y:self.frame.height)
-        portraitLockView.frame = CGRect(origin: origin, size:
-            CGSize(width: sideLength, height: Properties.portraitLockHeight))
-        portraitPictureView = UIImageView(frame: portraitLockView.bounds)
-        portraitPictureView.alpha = 1.0
-        portraitPictureView.image = UIImage(imageLiteral: "LockOn")
-        portraitPictureView.contentMode = .ScaleToFill
-        portraitLockView.addSubview(portraitPictureView)
-        portraitLockView.sendSubviewToBack(portraitPictureView)
-        self.addSubview(portraitLockView)
-        
-        UIView.animateWithDuration(1.0,
-            delay: 0.0,
-            usingSpringWithDamping: 0.9,
-            initialSpringVelocity: 15,
-            options: .CurveLinear,
-            animations: {
-                self.portraitLockView.frame = CGRect(origin:
-                    CGPoint(x:self.portraitLockView.frame.origin.x,
-                        y: self.orientationLabel.frame.height +
-                            self.orientationLabel.frame.origin.y),
-                    size: self.portraitLockView.frame.size)
-            },
-            completion: { (didFinish: Bool) -> () in
-                dispatch_async(dispatch_get_main_queue(), {
-                    if(didFinish){
-                        self.portraitPictureView.animationImages = [UIImage(imageLiteral: "LockOff"),
-                            UIImage(imageLiteral: "LockOn")]
-                        self.portraitPictureView.animationDuration = 2.0
-                        self.portraitPictureView.startAnimating()
-                    }
-                })
-            }
-        )
-    }
-    
-    func secondScreen(){
-        whichWelcomeScreen++
-        portraitPictureView.removeFromSuperview()
+
         let sideLength = frame.width*Properties.upArrowViewRatio
         upArrowView.frame = CGRect(origin:
             CGPoint(x:frame.width,
@@ -443,9 +406,10 @@ class OverlayView: UIView {
                 },
                 completion: nil
         )
+        upArrowView.alpha = orientationLabel.alpha
     }
     
-    func thirdScreen(){
+    func secondScreen(){
         whichWelcomeScreen++
         upArrowView.removeFromSuperview()
         orientationLabel.text = "Rotate to Film"
@@ -465,7 +429,6 @@ class OverlayView: UIView {
         phoneView.addSubview(pictureView)
         phoneView.sendSubviewToBack(pictureView)
         self.addSubview(phoneView)
-
         
         //Animate
         UIView.animateWithDuration(0.75, animations: {self.orientationLabel.alpha = 0.75})
@@ -486,9 +449,10 @@ class OverlayView: UIView {
                 }
             }
         )
+        phoneView.alpha = orientationLabel.alpha
     }
     
-    func fourthScreen(){
+    func thirdScreen(){
         whichWelcomeScreen++
         circleView.removeFromSuperview()
         orientationLabel.text = "Rotate back to finish"
@@ -500,7 +464,7 @@ class OverlayView: UIView {
         
     }
     
-    func fifthScreen(){
+    func fourthScreen(){
         whichWelcomeScreen++
         phoneView.removeFromSuperview()
         orientationLabel.frame.origin = CGPoint(x: orientationLabel.frame.origin.x,
@@ -516,8 +480,9 @@ class OverlayView: UIView {
             }
         )
     }
-    func sixthScreen(){
+    func fifthScreen(){
         flash.removeFromSuperview()
+        saveView.removeFromSuperview()
         whichWelcomeScreen++
         self.orientationLabel.font = UIFont(name: Properties.font, size: 38)
         self.orientationLabel.frame.origin = CGPoint(x:self.orientationLabel.frame.origin.x,
@@ -527,14 +492,14 @@ class OverlayView: UIView {
         UIView.animateWithDuration(0.5, animations: { self.orientationLabel.alpha = 0.75})
 
     }
-    func seventhScreen(){
+    func sixthScreen(){
         backgroundColor = UIColor.clearColor()
         circleView.removeFromSuperview()
+        saveView.removeFromSuperview()
         okayButton.removeFromSuperview()
         orientationLabel.removeFromSuperview()
+        self.addSubview(flash)
         ongoingIntroduction = false
-        
-        
     }
     
     

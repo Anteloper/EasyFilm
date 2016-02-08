@@ -20,6 +20,7 @@ class FilmController: UIViewController,
     var isFirstLaunch = false
     let motionManager = CMMotionManager()
     
+    //MARK: Lifecycle
     override func viewDidLoad(){
         let isNotFirstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("isFirstLaunch")
         if !isNotFirstLaunch {
@@ -28,6 +29,7 @@ class FilmController: UIViewController,
         }
         
     }
+    
     override func viewDidAppear(animated: Bool) {
         if !startCameraFromViewController(self, withDelegate: self){
             createAlert("Camera not found",
@@ -46,19 +48,14 @@ class FilmController: UIViewController,
                         self.portrait()
                     }
                     else if(xrotation < -0.8){
-                        self.startCapture(positiveRotation: true)
+                        self.landscape(positiveRotation: true)
                     }
                     else if(xrotation > 0.8){
-                        self.startCapture(positiveRotation: false)
+                        self.landscape(positiveRotation: false)
                     }
                 }
             })
         }
-        
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "rotated",
-            name: UIDeviceOrientationDidChangeNotification,
-            object: nil)
     }
     
     
@@ -106,7 +103,6 @@ class FilmController: UIViewController,
             }
         }
     }
-
     
     func video(videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
@@ -114,6 +110,7 @@ class FilmController: UIViewController,
         }
     }
     
+    //Shortcut for alerts
     func createAlert(title: String, message: String, button: String){
         let alert = UIAlertController(title: title,
             message: message,
@@ -124,22 +121,8 @@ class FilmController: UIViewController,
         self.presentViewController(alert, animated: true, completion: nil)
     }
     
-    //MARK: Rotation Handling
-    func rotated(){
-        if UIDevice.currentDevice().orientation == .LandscapeLeft{
-                startCapture(positiveRotation: true)
-        }
-            
-        else if UIDevice.currentDevice().orientation == .LandscapeRight{
-                startCapture(positiveRotation: false)
-        }
-            
-        else if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation)){
-            portrait()
-        }
-    }
     
-        
+    //MARK: Rotation Handling
     func portrait(){
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
             if(!overlay.ongoingIntroduction){
@@ -152,7 +135,7 @@ class FilmController: UIViewController,
         }
     }
 
-    func startCapture(positiveRotation isPos: Bool){
+    func landscape(positiveRotation isPos: Bool){
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
             if(!overlay.ongoingIntroduction && !overlay.isFilming){
                 overlay.didBeginFilmingWithPositiveRotation(isPos)
@@ -167,15 +150,4 @@ class FilmController: UIViewController,
         }
     }    
 }
-
-//THINGS TRIED
-//in start capture
-//let transform: CGAffineTransform = self.view.transform
-//cameraController.cameraOverlayView?.transform = CGAffineTransformRotate(transform, CGFloat(M_PI_4))
-
-//in rotated
-// /* let value = UIInterfaceOrientation.LandscapeRight.rawValue
-//UIDevice.currentDevice().setValue(value, forKey: "orientation")
-//UIApplication.sharedApplication().setStatusBarOrientation(
-//   UIInterfaceOrientation.LandscapeLeft, animated: false)*/
 

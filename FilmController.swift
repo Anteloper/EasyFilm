@@ -12,8 +12,7 @@ import CoreMotion
 
 class FilmController: UIViewController,
                       UIImagePickerControllerDelegate,
-                      UINavigationControllerDelegate {
-    
+                      UINavigationControllerDelegate { 
     
     //MARK: Global variables
     let cameraController: UIImagePickerController! = UIImagePickerController()
@@ -26,8 +25,8 @@ class FilmController: UIViewController,
         if !isNotFirstLaunch {
             isFirstLaunch = true
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isFirstLaunch")
+            configureAccelerometer(true)
         }
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -36,28 +35,7 @@ class FilmController: UIViewController,
                 message: "A connection to the camera could not be made",
                 button: "OK")
         }
-        
-        //MARK: Rotation Management Setup
-        if motionManager.accelerometerAvailable{
-            motionManager.accelerometerUpdateInterval = 0.3
-            motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
-                (accelDataMaybe, error) in
-                if let accelData: CMAccelerometerData = accelDataMaybe{
-                    let xrotation = accelData.acceleration.x
-                    if(abs(xrotation) <= 0.6){
-                        self.portrait()
-                    }
-                    else if(xrotation < -0.6){
-                        self.landscape(positiveRotation: true)
-                    }
-                    else if(xrotation > 0.6){
-                        self.landscape(positiveRotation: false)
-                    }
-                }
-            })
-        }
     }
-    
     
     //MARK: ImagePicker Setup and Presentation
     func startCameraFromViewController(viewController: UIViewController,
@@ -120,7 +98,33 @@ class FilmController: UIViewController,
             handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
-    
+    //MARK: Rotation Management Setup
+    func configureAccelerometer(shouldBegin: Bool){
+        if motionManager.accelerometerAvailable{
+            motionManager.accelerometerUpdateInterval = 1.0
+            motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
+                (accelDataMaybe, error) in
+                if let accelData: CMAccelerometerData = accelDataMaybe{
+                    let xrotation = accelData.acceleration.x
+                    if(abs(xrotation) <= 0.6){
+                        self.portrait()
+                    }
+                    else if(xrotation < -0.6){
+                        self.landscape(positiveRotation: true)
+                    }
+                    else if(xrotation > 0.6){
+                        self.landscape(positiveRotation: false)
+                    }
+                }
+            })
+        }
+        else{
+            createAlert("Accelerometer not found",
+                message: "This app won't function correctly without the use of the acceleromter",
+                button: "OK")
+        }
+    }
+
     
     //MARK: Rotation Handling
     func portrait(){

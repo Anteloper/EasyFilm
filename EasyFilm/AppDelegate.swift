@@ -7,23 +7,25 @@
 //
 
 import UIKit
-import AVFoundation
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    let controller = FilmController()
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         return true
     }
+    
+    func applicationWillEnterForeground(application: UIApplication) {
+
+    }
 
     func applicationWillResignActive(application: UIApplication) {
-
+    
     }
 
-    func applicationDidEnterBackground(application: UIApplication) {
-    }
+    func applicationDidEnterBackground(application: UIApplication) {}
 
 }
 

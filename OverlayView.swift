@@ -125,7 +125,6 @@ class OverlayView: UIView {
     
     
     //MARK: Timer
-    //Todo fix force unwrapping
     func updateCounter(){
         counter!++
         if counter! < 10{
@@ -231,8 +230,6 @@ class OverlayView: UIView {
         circleView.addSubview(circleImage)
         self.bringSubviewToFront(circleView)
         self.addSubview(circleView)
-        
-        
     }
     
     func configureFocusView(centerPoint: CGPoint){
@@ -260,7 +257,7 @@ class OverlayView: UIView {
         checkView.contentMode = .ScaleToFill
         saveView.addSubview(checkView)
         saveView.sendSubviewToBack(checkView)
-        saveView.alpha = 0.75
+        saveView.alpha = 0.6
         self.addSubview(saveView)
         
         
@@ -486,6 +483,7 @@ class OverlayView: UIView {
             }
         )
     }
+    
     
     func fifthScreen(){
         flash.removeFromSuperview()

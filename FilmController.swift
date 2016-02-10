@@ -62,7 +62,8 @@ class FilmController: UIViewController,
         //Add the overlay after the camera is displayed
         presentViewController(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
-            overlayView.setup(isFirstLaunch: self.isFirstLaunch)
+            //todo
+            overlayView.setup(isFirstLaunch: true)
         })
             
         return true

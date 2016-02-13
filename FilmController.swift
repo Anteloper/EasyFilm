@@ -22,11 +22,11 @@ class FilmController: UIViewController,
     //MARK: Lifecycle
     override func viewDidLoad(){
         let isNotFirstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("isFirstLaunch")
-        if !isNotFirstLaunch {
+        if !isNotFirstLaunch{
             isFirstLaunch = true
             NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isFirstLaunch")
-            configureAccelerometer(true)
         }
+        configureAccelerometer()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -53,6 +53,7 @@ class FilmController: UIViewController,
         cameraController.allowsEditing = false
         cameraController.delegate = delegate
         cameraController.videoQuality = UIImagePickerControllerQualityType.TypeHigh
+        
 
         //Custom view configuration
         let overlayController = OverlayViewController(nibName: "OverlayViewController", bundle: nil)
@@ -63,7 +64,7 @@ class FilmController: UIViewController,
         presentViewController(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
             //todo
-            overlayView.setup(isFirstLaunch: true)
+            overlayView.setup(isFirstLaunch: self.isFirstLaunch)
         })
             
         return true
@@ -99,14 +100,17 @@ class FilmController: UIViewController,
             handler: nil))
         self.presentViewController(alert, animated: true, completion: nil)
     }
+    
     //MARK: Rotation Management Setup
-    func configureAccelerometer(shouldBegin: Bool){
+    func configureAccelerometer(){
         if motionManager.accelerometerAvailable{
             motionManager.accelerometerUpdateInterval = 1.0
             motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
                 (accelDataMaybe, error) in
+                
                 if let accelData: CMAccelerometerData = accelDataMaybe{
                     let xrotation = accelData.acceleration.x
+                    
                     if(abs(xrotation) <= 0.6){
                         self.portrait()
                     }

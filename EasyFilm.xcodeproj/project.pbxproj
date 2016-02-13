@@ -16,6 +16,7 @@
 		4C252F551C4DF30D00908322 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C252F541C4DF30D00908322 /* OverlayView.swift */; };
 		4C252F581C4DF3E800908322 /* OverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C252F561C4DF3E800908322 /* OverlayViewController.swift */; };
 		4C252F591C4DF3E800908322 /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C252F571C4DF3E800908322 /* OverlayViewController.xib */; };
+		4C31F31B1C6D34590013E838 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C31F31A1C6D34590013E838 /* Properties.swift */; };
 		4C9A0AD91C472E9700C9FF0C /* FilmController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A0AD81C472E9700C9FF0C /* FilmController.swift */; };
 /* End PBXBuildFile section */
 
@@ -52,6 +53,7 @@
 		4C252F541C4DF30D00908322 /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OverlayView.swift; path = ../OverlayView.swift; sourceTree = "<group>"; };
 		4C252F561C4DF3E800908322 /* OverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayViewController.swift; sourceTree = "<group>"; };
 		4C252F571C4DF3E800908322 /* OverlayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayViewController.xib; sourceTree = "<group>"; };
+		4C31F31A1C6D34590013E838 /* Properties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Properties.swift; sourceTree = "<group>"; };
 		4C9A0AD81C472E9700C9FF0C /* FilmController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilmController.swift; path = ../FilmController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,6 +110,7 @@
 				4C252F561C4DF3E800908322 /* OverlayViewController.swift */,
 				4C252F571C4DF3E800908322 /* OverlayViewController.xib */,
 				4C252F541C4DF30D00908322 /* OverlayView.swift */,
+				4C31F31A1C6D34590013E838 /* Properties.swift */,
 				4C1A31201C45C64F005A368A /* Main.storyboard */,
 				4C1A31231C45C64F005A368A /* Assets.xcassets */,
 				4C1A31251C45C64F005A368A /* LaunchScreen.storyboard */,
@@ -267,6 +270,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C31F31B1C6D34590013E838 /* Properties.swift in Sources */,
 				4C252F551C4DF30D00908322 /* OverlayView.swift in Sources */,
 				4C1A311D1C45C64F005A368A /* AppDelegate.swift in Sources */,
 				4C9A0AD91C472E9700C9FF0C /* FilmController.swift in Sources */,

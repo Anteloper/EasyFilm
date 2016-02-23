@@ -13,9 +13,9 @@ class OverlayView: UIView {
     //MARK: Properties
     
     //Flags for FilmController
-    var flashOn = false
-    var ongoingIntroduction = true
-    var isFilming = false
+    internal var flashOn = false
+    internal var ongoingIntroduction = true
+    internal var isFilming = false
     
     //Global Variables
     private var phoneView = UIView()
@@ -491,6 +491,7 @@ class OverlayView: UIView {
         UIView.animateWithDuration(0.5, animations: { self.orientationLabel.alpha = 0.75})
 
     }
+    
     func sixthScreen(){
         backgroundColor = UIColor.clearColor()
         circleView.removeFromSuperview()

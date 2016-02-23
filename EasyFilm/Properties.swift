@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-struct Properties{
+internal struct Properties{
     static let upArrowViewRatio: CGFloat = 1/2
     static let orientationLabelRatio: CGFloat = 3/4
     static let okayButtonRatio: CGFloat = 7/8

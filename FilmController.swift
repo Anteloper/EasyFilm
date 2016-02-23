@@ -9,15 +9,16 @@
 import UIKit
 import MobileCoreServices
 import CoreMotion
+import AVFoundation
 
 class FilmController: UIViewController,
                       UIImagePickerControllerDelegate,
                       UINavigationControllerDelegate { 
     
     //MARK: Global variables
-    let cameraController: UIImagePickerController! = UIImagePickerController()
-    var isFirstLaunch = false
-    let motionManager = CMMotionManager()
+    private let cameraController: UIImagePickerController! = UIImagePickerController()
+    private var isFirstLaunch = false
+    private let motionManager = CMMotionManager()
     
     //MARK: Lifecycle
     override func viewDidLoad(){
@@ -143,6 +144,8 @@ class FilmController: UIViewController,
             }
         }
     }
+    
+
 
     func landscape(positiveRotation isPos: Bool){
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
@@ -154,7 +157,10 @@ class FilmController: UIViewController,
                 else{
                     cameraController.cameraFlashMode = .Off
                 }
-                cameraController.startVideoCapture()
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))),
+                    dispatch_get_main_queue(), {
+                    self.cameraController.startVideoCapture()
+                })
             }
         }
     }    

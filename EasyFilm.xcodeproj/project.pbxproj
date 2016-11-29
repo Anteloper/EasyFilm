@@ -11,31 +11,12 @@
 		4C1A31221C45C64F005A368A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C1A31201C45C64F005A368A /* Main.storyboard */; };
 		4C1A31241C45C64F005A368A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C1A31231C45C64F005A368A /* Assets.xcassets */; };
 		4C1A31271C45C64F005A368A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C1A31251C45C64F005A368A /* LaunchScreen.storyboard */; };
-		4C1A31321C45C64F005A368A /* EasyFilmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A31311C45C64F005A368A /* EasyFilmTests.swift */; };
-		4C1A313D1C45C64F005A368A /* EasyFilmUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A313C1C45C64F005A368A /* EasyFilmUITests.swift */; };
 		4C252F551C4DF30D00908322 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C252F541C4DF30D00908322 /* OverlayView.swift */; };
 		4C252F581C4DF3E800908322 /* OverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C252F561C4DF3E800908322 /* OverlayViewController.swift */; };
 		4C252F591C4DF3E800908322 /* OverlayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C252F571C4DF3E800908322 /* OverlayViewController.xib */; };
 		4C31F31B1C6D34590013E838 /* Properties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C31F31A1C6D34590013E838 /* Properties.swift */; };
 		4C9A0AD91C472E9700C9FF0C /* FilmController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C9A0AD81C472E9700C9FF0C /* FilmController.swift */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		4C1A312E1C45C64F005A368A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C1A31111C45C64F005A368A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4C1A31181C45C64F005A368A;
-			remoteInfo = EasyFilm;
-		};
-		4C1A31391C45C64F005A368A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4C1A31111C45C64F005A368A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4C1A31181C45C64F005A368A;
-			remoteInfo = EasyFilm;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4C1A31191C45C64F005A368A /* EasyFilm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyFilm.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -44,10 +25,8 @@
 		4C1A31231C45C64F005A368A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C1A31261C45C64F005A368A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C1A31281C45C64F005A368A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4C1A312D1C45C64F005A368A /* EasyFilmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyFilmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C1A31311C45C64F005A368A /* EasyFilmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyFilmTests.swift; sourceTree = "<group>"; };
 		4C1A31331C45C64F005A368A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4C1A31381C45C64F005A368A /* EasyFilmUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = EasyFilmUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C1A313C1C45C64F005A368A /* EasyFilmUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EasyFilmUITests.swift; sourceTree = "<group>"; };
 		4C1A313E1C45C64F005A368A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C252F541C4DF30D00908322 /* OverlayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OverlayView.swift; path = ../OverlayView.swift; sourceTree = "<group>"; };
@@ -59,20 +38,6 @@
 
 /* Begin PBXFrameworksBuildPhase section */
 		4C1A31161C45C64F005A368A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4C1A312A1C45C64F005A368A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4C1A31351C45C64F005A368A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -96,8 +61,6 @@
 			isa = PBXGroup;
 			children = (
 				4C1A31191C45C64F005A368A /* EasyFilm.app */,
-				4C1A312D1C45C64F005A368A /* EasyFilmTests.xctest */,
-				4C1A31381C45C64F005A368A /* EasyFilmUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -105,8 +68,8 @@
 		4C1A311B1C45C64F005A368A /* EasyFilm */ = {
 			isa = PBXGroup;
 			children = (
-				4C9A0AD81C472E9700C9FF0C /* FilmController.swift */,
 				4C1A311C1C45C64F005A368A /* AppDelegate.swift */,
+				4C9A0AD81C472E9700C9FF0C /* FilmController.swift */,
 				4C252F561C4DF3E800908322 /* OverlayViewController.swift */,
 				4C252F571C4DF3E800908322 /* OverlayViewController.xib */,
 				4C252F541C4DF30D00908322 /* OverlayView.swift */,
@@ -157,42 +120,6 @@
 			productReference = 4C1A31191C45C64F005A368A /* EasyFilm.app */;
 			productType = "com.apple.product-type.application";
 		};
-		4C1A312C1C45C64F005A368A /* EasyFilmTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4C1A31441C45C64F005A368A /* Build configuration list for PBXNativeTarget "EasyFilmTests" */;
-			buildPhases = (
-				4C1A31291C45C64F005A368A /* Sources */,
-				4C1A312A1C45C64F005A368A /* Frameworks */,
-				4C1A312B1C45C64F005A368A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4C1A312F1C45C64F005A368A /* PBXTargetDependency */,
-			);
-			name = EasyFilmTests;
-			productName = EasyFilmTests;
-			productReference = 4C1A312D1C45C64F005A368A /* EasyFilmTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		4C1A31371C45C64F005A368A /* EasyFilmUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 4C1A31471C45C64F005A368A /* Build configuration list for PBXNativeTarget "EasyFilmUITests" */;
-			buildPhases = (
-				4C1A31341C45C64F005A368A /* Sources */,
-				4C1A31351C45C64F005A368A /* Frameworks */,
-				4C1A31361C45C64F005A368A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				4C1A313A1C45C64F005A368A /* PBXTargetDependency */,
-			);
-			name = EasyFilmUITests;
-			productName = EasyFilmUITests;
-			productReference = 4C1A31381C45C64F005A368A /* EasyFilmUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -200,20 +127,14 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0720;
-				LastUpgradeCheck = 0720;
+				LastUpgradeCheck = 0800;
 				ORGANIZATIONNAME = "Oliver Hill";
 				TargetAttributes = {
 					4C1A31181C45C64F005A368A = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = JBLV67SH79;
-					};
-					4C1A312C1C45C64F005A368A = {
-						CreatedOnToolsVersion = 7.2;
-						TestTargetID = 4C1A31181C45C64F005A368A;
-					};
-					4C1A31371C45C64F005A368A = {
-						CreatedOnToolsVersion = 7.2;
-						TestTargetID = 4C1A31181C45C64F005A368A;
+						LastSwiftMigration = 0800;
+						ProvisioningStyle = Manual;
 					};
 				};
 			};
@@ -231,8 +152,6 @@
 			projectRoot = "";
 			targets = (
 				4C1A31181C45C64F005A368A /* EasyFilm */,
-				4C1A312C1C45C64F005A368A /* EasyFilmTests */,
-				4C1A31371C45C64F005A368A /* EasyFilmUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -246,20 +165,6 @@
 				4C1A31241C45C64F005A368A /* Assets.xcassets in Resources */,
 				4C1A31221C45C64F005A368A /* Main.storyboard in Resources */,
 				4C252F591C4DF3E800908322 /* OverlayViewController.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4C1A312B1C45C64F005A368A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4C1A31361C45C64F005A368A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,36 +183,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		4C1A31291C45C64F005A368A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4C1A31321C45C64F005A368A /* EasyFilmTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		4C1A31341C45C64F005A368A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4C1A313D1C45C64F005A368A /* EasyFilmUITests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		4C1A312F1C45C64F005A368A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 4C1A31181C45C64F005A368A /* EasyFilm */;
-			targetProxy = 4C1A312E1C45C64F005A368A /* PBXContainerItemProxy */;
-		};
-		4C1A313A1C45C64F005A368A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 4C1A31181C45C64F005A368A /* EasyFilm */;
-			targetProxy = 4C1A31391C45C64F005A368A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		4C1A31201C45C64F005A368A /* Main.storyboard */ = {
@@ -342,14 +218,17 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = Y7V5HJ9RGA;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -366,10 +245,10 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "f40ceaec-f94e-4ce4-bdfd-49c940455fc8";
+				PROVISIONING_PROFILE = "b5ee9d52-7e0e-40ef-b103-e61e01ea3616";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -390,14 +269,17 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = Y7V5HJ9RGA;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -408,10 +290,11 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "f40ceaec-f94e-4ce4-bdfd-49c940455fc8";
+				PROVISIONING_PROFILE = "b5ee9d52-7e0e-40ef-b103-e61e01ea3616";
 				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
@@ -420,16 +303,19 @@
 		4C1A31421C45C64F005A368A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
+				DEVELOPMENT_TEAM = JBLV67SH79;
 				INFOPLIST_FILE = EasyFilm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Film.EasyFilm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE = "738cb2c2-3381-4471-8e23-58a8e4e81347";
+				PROVISIONING_PROFILE_SPECIFIER = TiltShotDistribution11/25/16;
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
@@ -437,65 +323,20 @@
 		4C1A31431C45C64F005A368A /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
-				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = EasyFilm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Film.EasyFilm;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
-			};
-			name = Release;
-		};
-		4C1A31451C45C64F005A368A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = EasyFilmTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Film.EasyFilmTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyFilm.app/EasyFilm";
-			};
-			name = Debug;
-		};
-		4C1A31461C45C64F005A368A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = EasyFilmTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Film.EasyFilmTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/EasyFilm.app/EasyFilm";
-			};
-			name = Release;
-		};
-		4C1A31481C45C64F005A368A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = EasyFilmUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Film.EasyFilmUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = EasyFilm;
-				USES_XCTRUNNER = YES;
-			};
-			name = Debug;
-		};
-		4C1A31491C45C64F005A368A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = EasyFilmUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = Film.EasyFilmUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = EasyFilm;
-				USES_XCTRUNNER = YES;
 			};
 			name = Release;
 		};
@@ -516,24 +357,6 @@
 			buildConfigurations = (
 				4C1A31421C45C64F005A368A /* Debug */,
 				4C1A31431C45C64F005A368A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4C1A31441C45C64F005A368A /* Build configuration list for PBXNativeTarget "EasyFilmTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4C1A31451C45C64F005A368A /* Debug */,
-				4C1A31461C45C64F005A368A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		4C1A31471C45C64F005A368A /* Build configuration list for PBXNativeTarget "EasyFilmUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				4C1A31481C45C64F005A368A /* Debug */,
-				4C1A31491C45C64F005A368A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

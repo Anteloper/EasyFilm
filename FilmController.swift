@@ -16,21 +16,21 @@ class FilmController: UIViewController,
                       UINavigationControllerDelegate { 
     
     //MARK: Global variables
-    private let cameraController: UIImagePickerController! = UIImagePickerController()
-    private var isFirstLaunch = false
-    private let motionManager = CMMotionManager()
+    fileprivate let cameraController: UIImagePickerController! = UIImagePickerController()
+    fileprivate var isFirstLaunch = false
+    fileprivate let motionManager = CMMotionManager()
     
     //MARK: Lifecycle
     override func viewDidLoad(){
-        let isNotFirstLaunch = NSUserDefaults.standardUserDefaults().boolForKey("isFirstLaunch")
+        let isNotFirstLaunch = UserDefaults.standard.bool(forKey: "isFirstLaunch")
         if !isNotFirstLaunch{
             isFirstLaunch = true
-            NSUserDefaults.standardUserDefaults().setBool(true, forKey: "isFirstLaunch")
+            UserDefaults.standard.set(true, forKey: "isFirstLaunch")
         }
         configureAccelerometer()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         if !startCameraFromViewController(self, withDelegate: self){
             createAlert("Camera not found",
                 message: "A connection to the camera could not be made",
@@ -39,21 +39,20 @@ class FilmController: UIViewController,
     }
     
     //MARK: ImagePicker Setup and Presentation
-    func startCameraFromViewController(viewController: UIViewController,
-        withDelegate delegate: protocol<UIImagePickerControllerDelegate,
-        UINavigationControllerDelegate>) -> Bool {
+    func startCameraFromViewController(_ viewController: UIViewController,
+        withDelegate delegate: UIImagePickerControllerDelegate & UINavigationControllerDelegate) -> Bool {
 
-        if UIImagePickerController.isSourceTypeAvailable(.Camera) == false {
+        if UIImagePickerController.isSourceTypeAvailable(.camera) == false {
             return false
         }
         
         //Camera configuration
-        cameraController.sourceType = .Camera
+        cameraController.sourceType = .camera
         cameraController.mediaTypes = [kUTTypeMovie as String]
         cameraController.showsCameraControls = false
         cameraController.allowsEditing = false
         cameraController.delegate = delegate
-        cameraController.videoQuality = UIImagePickerControllerQualityType.TypeHigh
+        cameraController.videoQuality = UIImagePickerControllerQualityType.typeHigh
         
 
         //Custom view configuration
@@ -62,7 +61,7 @@ class FilmController: UIViewController,
         overlayView.frame = cameraController.view.frame
         
         //Add the overlay after the camera is displayed
-        presentViewController(cameraController, animated: false, completion: {
+        present(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
             //todo
             overlayView.setup(isFirstLaunch: self.isFirstLaunch)
@@ -71,42 +70,38 @@ class FilmController: UIViewController,
         return true
     }
     
-    func imagePickerController(picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController,
+        didFinishPickingMediaWithInfo info: [String : Any]) {
             
         let mediaType = info[UIImagePickerControllerMediaType] as! NSString
 
         if mediaType == kUTTypeMovie {
-            let path = (info[UIImagePickerControllerMediaURL] as! NSURL).path
-            if UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path!) {
-                UISaveVideoAtPathToSavedPhotosAlbum(path!,
-                    self, "video:didFinishSavingWithError:contextInfo:",nil)
+            let path = (info[UIImagePickerControllerMediaURL] as! URL).path
+            if UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path) {
+                UISaveVideoAtPathToSavedPhotosAlbum(path,
+                    self, #selector(FilmController.video(_:didFinishSavingWithError:contextInfo:)),nil)
             }
         }
     }
     
-    func video(videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
+    func video(_ videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
         if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
             overlay.configureAndAnimateSaveView()
         }
     }
     
     //Shortcut for alerts
-    func createAlert(title: String, message: String, button: String){
-        let alert = UIAlertController(title: title,
-            message: message,
-            preferredStyle: UIAlertControllerStyle.Alert)
-        alert.addAction(UIAlertAction(title: button,
-            style: UIAlertActionStyle.Default,
-            handler: nil))
-        self.presentViewController(alert, animated: true, completion: nil)
+    func createAlert(_ title: String, message: String, button: String){
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: button, style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     //MARK: Rotation Management Setup
     func configureAccelerometer(){
-        if motionManager.accelerometerAvailable{
+        if motionManager.isAccelerometerAvailable{
             motionManager.accelerometerUpdateInterval = 1.0
-            motionManager.startAccelerometerUpdatesToQueue(NSOperationQueue.currentQueue()!, withHandler:{
+            motionManager.startAccelerometerUpdates(to: OperationQueue.current!, withHandler:{
                 (accelDataMaybe, error) in
                 
                 if let accelData: CMAccelerometerData = accelDataMaybe{
@@ -138,7 +133,7 @@ class FilmController: UIViewController,
             if(!overlay.ongoingIntroduction){
                 if overlay.isFilming{
                     cameraController.stopVideoCapture()
-                    cameraController.cameraFlashMode = .Off
+                    cameraController.cameraFlashMode = .off
                     overlay.didChangeToPortrait()
                 }
             }
@@ -152,13 +147,12 @@ class FilmController: UIViewController,
             if(!overlay.ongoingIntroduction && !overlay.isFilming){
                 overlay.didBeginFilmingWithPositiveRotation(isPos)
                 if overlay.flashOn{
-                    cameraController.cameraFlashMode = .On
+                    cameraController.cameraFlashMode = .on
                 }
                 else{
-                    cameraController.cameraFlashMode = .Off
+                    cameraController.cameraFlashMode = .off
                 }
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Int64(0.5 * Double(NSEC_PER_SEC))),
-                    dispatch_get_main_queue(), {
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
                     self.cameraController.startVideoCapture()
                 })
             }

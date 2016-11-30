@@ -17,7 +17,7 @@ class OverlayView: UIView {
     internal var ongoingIntroduction = true
     internal var isFilming = false
     
-    //Global Variables
+    //File Variables
     fileprivate var phoneView = UIView()
     fileprivate var upArrowView = UIView()
     fileprivate var orientationLabel = UILabel()
@@ -142,10 +142,9 @@ class OverlayView: UIView {
         }
     }
     
-    //MARK: Touches Began
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    //MARK: Focus
+    func animateFocus(_ touches: Set<UITouch>, with event: UIEvent?) {
         if !ongoingIntroduction && (event?.allTouches!.count)! == 1{
-            
             let touch: UITouch = touches.first!
             focusView.removeFromSuperview()
             let centerPoint = touch.location(in: self)
@@ -169,7 +168,6 @@ class OverlayView: UIView {
                 }
             )
         }
-
     }
     
     
@@ -327,40 +325,33 @@ class OverlayView: UIView {
     }
     
     func nextScreen(){
-        switch(whichWelcomeScreen)
-        {
-           
-        case 1:
-            //Add arrow for flash introduction
-            firstScreen()
-            
-        case 2:
-             //Rotate to film screen
-            secondScreen()
-           
-        case 3:
-            //Rotate to stop screen
-            thirdScreen()
-            
-        case 4:
-            //Check mark screen
-            fourthScreen()
-            
-        case 5:
-            //Happy filming screen
-            fifthScreen()
+        switch(whichWelcomeScreen){
+
+        //Add arrow for flash introduction
+        case 1: firstScreen()
         
-        case 6:
-            //Clear screen
-            sixthScreen()
+        //Rotate to film screen
+        case 2: secondScreen()
+           
+        //Rotate to stop screen
+        case 3: thirdScreen()
+            
+        //Check mark screen
+        case 4:fourthScreen()
+            
+        //Happy filming screen
+        case 5: fifthScreen()
+        
+        //Clear screen
+        case 6: sixthScreen()
     
         default: break
         }
     }
 
-    //MARK: Orientation Screens
-
     
+    
+    //MARK: Orientation Screens
     func firstScreen(){
         whichWelcomeScreen += 1
         orientationLabel.frame = CGRect(origin: CGPoint(x: orientationLabel.frame.origin.x,
@@ -454,7 +445,6 @@ class OverlayView: UIView {
             options: [],
             animations: { self.phoneView.transform = CGAffineTransform(rotationAngle: CGFloat(0))},
             completion: nil)
-        
     }
     
     func fourthScreen(){
@@ -474,7 +464,6 @@ class OverlayView: UIView {
         )
     }
     
-    
     func fifthScreen(){
         flash.removeFromSuperview()
         saveView.removeFromSuperview()
@@ -485,7 +474,6 @@ class OverlayView: UIView {
         self.orientationLabel.alpha = 0.0
         orientationLabel.text = "That's it!\n Happy Filming"
         UIView.animate(withDuration: 0.5, animations: { self.orientationLabel.alpha = 0.75})
-
     }
     
     func sixthScreen(){
@@ -497,5 +485,4 @@ class OverlayView: UIView {
         self.addSubview(flash)
         ongoingIntroduction = false
     }
-
 }

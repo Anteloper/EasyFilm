@@ -19,6 +19,8 @@ class FilmController: UIViewController,
     fileprivate let cameraController: UIImagePickerController! = UIImagePickerController()
     fileprivate var isFirstLaunch = false
     fileprivate let motionManager = CMMotionManager()
+    fileprivate var overlayController = OverlayViewController()
+    
     
     //MARK: Lifecycle
     override func viewDidLoad(){
@@ -36,6 +38,10 @@ class FilmController: UIViewController,
                 message: "A connection to the camera could not be made",
                 button: "OK")
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        overlayController.userFocused(touches: touches, event: event)
     }
     
     //MARK: ImagePicker Setup and Presentation
@@ -56,7 +62,7 @@ class FilmController: UIViewController,
         
 
         //Custom view configuration
-        let overlayController = OverlayViewController(nibName: "OverlayViewController", bundle: nil)
+        overlayController = OverlayViewController(nibName: "OverlayViewController", bundle: nil)
         let overlayView: OverlayView = overlayController.view as! OverlayView
         overlayView.frame = cameraController.view.frame
         
@@ -85,9 +91,7 @@ class FilmController: UIViewController,
     }
     
     func video(_ videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
-        if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-            overlay.configureAndAnimateSaveView()
-        }
+        overlayController.overlayView.configureAndAnimateSaveView()
     }
     
     //Shortcut for alerts
@@ -129,13 +133,12 @@ class FilmController: UIViewController,
     
     //MARK: Rotation Handling
     func portrait(){
-        if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-            if(!overlay.ongoingIntroduction){
-                if overlay.isFilming{
-                    cameraController.stopVideoCapture()
-                    cameraController.cameraFlashMode = .off
-                    overlay.didChangeToPortrait()
-                }
+        let overlay = overlayController.overlayView
+        if(!overlay.ongoingIntroduction){
+            if overlay.isFilming{
+                cameraController.stopVideoCapture()
+                cameraController.cameraFlashMode = .off
+                overlay.didChangeToPortrait()
             }
         }
     }
@@ -143,20 +146,21 @@ class FilmController: UIViewController,
 
 
     func landscape(positiveRotation isPos: Bool){
-        if let overlay: OverlayView = cameraController.cameraOverlayView as? OverlayView{
-            if(!overlay.ongoingIntroduction && !overlay.isFilming){
-                overlay.didBeginFilmingWithPositiveRotation(isPos)
-                if overlay.flashOn{
-                    cameraController.cameraFlashMode = .on
-                }
-                else{
-                    cameraController.cameraFlashMode = .off
-                }
-                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
-                    self.cameraController.startVideoCapture()
-                })
+        let overlay = overlayController.overlayView
+        if(!overlay.ongoingIntroduction && !overlay.isFilming){
+            overlay.didBeginFilmingWithPositiveRotation(isPos)
+            if overlay.flashOn{
+                cameraController.showsCameraControls = true
+                cameraController.cameraFlashMode = .on
+                cameraController.showsCameraControls = false
             }
+            else{
+                cameraController.cameraFlashMode = .off
+            }
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + Double(Int64(0.5 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC), execute: {
+                self.cameraController.startVideoCapture()
+            })
         }
-    }    
+    }
 }
 

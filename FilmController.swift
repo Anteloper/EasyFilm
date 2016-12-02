@@ -11,13 +11,15 @@ import MobileCoreServices
 import CoreMotion
 import AVFoundation
 
+//The top level view controller. Never directly visible but instantiates and serves as the delegate
+//For the UIImagePickerController (the camera) and the OverlayViewController(custom controls and tutorial)
 class FilmController: UIViewController,
                       UIImagePickerControllerDelegate,
                       UINavigationControllerDelegate { 
     
     //MARK: Global variables
     fileprivate let cameraController: UIImagePickerController! = UIImagePickerController()
-    fileprivate var isFirstLaunch = false
+    fileprivate var isFirstLaunch = true
     fileprivate let motionManager = CMMotionManager()
     fileprivate var overlayController = OverlayViewController()
     
@@ -144,12 +146,12 @@ class FilmController: UIViewController,
     }
     
 
-
     func landscape(positiveRotation isPos: Bool){
         let overlay = overlayController.overlayView
         if(!overlay.ongoingIntroduction && !overlay.isFilming){
             overlay.didBeginFilmingWithPositiveRotation(isPos)
             if overlay.flashOn{
+                //No idea why but flash does not work without toggling the showControls on and off
                 cameraController.showsCameraControls = true
                 cameraController.cameraFlashMode = .on
                 cameraController.showsCameraControls = false

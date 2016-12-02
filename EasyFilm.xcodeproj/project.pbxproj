@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		4C1A311D1C45C64F005A368A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C1A311C1C45C64F005A368A /* AppDelegate.swift */; };
-		4C1A31221C45C64F005A368A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C1A31201C45C64F005A368A /* Main.storyboard */; };
 		4C1A31241C45C64F005A368A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C1A31231C45C64F005A368A /* Assets.xcassets */; };
 		4C1A31271C45C64F005A368A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4C1A31251C45C64F005A368A /* LaunchScreen.storyboard */; };
 		4C252F551C4DF30D00908322 /* OverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C252F541C4DF30D00908322 /* OverlayView.swift */; };
@@ -21,7 +20,6 @@
 /* Begin PBXFileReference section */
 		4C1A31191C45C64F005A368A /* EasyFilm.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyFilm.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C1A311C1C45C64F005A368A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		4C1A31211C45C64F005A368A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4C1A31231C45C64F005A368A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4C1A31261C45C64F005A368A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4C1A31281C45C64F005A368A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,7 +72,6 @@
 				4C252F571C4DF3E800908322 /* OverlayViewController.xib */,
 				4C252F541C4DF30D00908322 /* OverlayView.swift */,
 				4C31F31A1C6D34590013E838 /* Properties.swift */,
-				4C1A31201C45C64F005A368A /* Main.storyboard */,
 				4C1A31231C45C64F005A368A /* Assets.xcassets */,
 				4C1A31251C45C64F005A368A /* LaunchScreen.storyboard */,
 				4C1A31281C45C64F005A368A /* Info.plist */,
@@ -132,7 +129,7 @@
 				TargetAttributes = {
 					4C1A31181C45C64F005A368A = {
 						CreatedOnToolsVersion = 7.2;
-						DevelopmentTeam = Y7V5HJ9RGA;
+						DevelopmentTeam = JBLV67SH79;
 						LastSwiftMigration = 0800;
 						ProvisioningStyle = Automatic;
 					};
@@ -163,7 +160,6 @@
 			files = (
 				4C1A31271C45C64F005A368A /* LaunchScreen.storyboard in Resources */,
 				4C1A31241C45C64F005A368A /* Assets.xcassets in Resources */,
-				4C1A31221C45C64F005A368A /* Main.storyboard in Resources */,
 				4C252F591C4DF3E800908322 /* OverlayViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -186,14 +182,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		4C1A31201C45C64F005A368A /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				4C1A31211C45C64F005A368A /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		4C1A31251C45C64F005A368A /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -224,11 +212,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = Y7V5HJ9RGA;
+				DEVELOPMENT_TEAM = JBLV67SH79;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -275,11 +263,11 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Oliver Hill (2D8CCB89JF)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = Y7V5HJ9RGA;
+				DEVELOPMENT_TEAM = JBLV67SH79;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -307,7 +295,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Y7V5HJ9RGA;
+				DEVELOPMENT_TEAM = JBLV67SH79;
 				INFOPLIST_FILE = EasyFilm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -327,7 +315,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Oliver Hill (JBLV67SH79)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = Y7V5HJ9RGA;
+				DEVELOPMENT_TEAM = JBLV67SH79;
 				INFOPLIST_FILE = EasyFilm/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

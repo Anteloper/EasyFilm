@@ -9,5 +9,16 @@
 import UIKit
 
 class OverlayViewController: UIViewController {
-
+    
+    var overlayView = OverlayView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        overlayView = view as! OverlayView
+    }
+    
+    func userFocused(touches: Set<UITouch>, event: UIEvent?){
+        overlayView.animateFocus(touches, with: event)
+    }
+    
 }

@@ -24,6 +24,12 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Record Video</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Record Audio</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Save Video</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

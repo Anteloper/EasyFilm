@@ -15,11 +15,11 @@ import AVFoundation
 //For the UIImagePickerController (the camera) and the OverlayViewController(custom controls and tutorial)
 class FilmController: UIViewController,
                       UIImagePickerControllerDelegate,
-                      UINavigationControllerDelegate { 
+                      UINavigationControllerDelegate {
     
     //MARK: Global variables
     fileprivate let cameraController: UIImagePickerController! = UIImagePickerController()
-    fileprivate var isFirstLaunch = true
+    fileprivate var isFirstLaunch = false
     fileprivate let motionManager = CMMotionManager()
     fileprivate var overlayController = OverlayViewController()
     

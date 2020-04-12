@@ -26,6 +26,7 @@ class FilmController: UIViewController,
     
     //MARK: Lifecycle
     override func viewDidLoad(){
+        super.viewDidLoad()
         let isNotFirstLaunch = UserDefaults.standard.bool(forKey: "isFirstLaunch")
         if !isNotFirstLaunch{
             isFirstLaunch = true
@@ -35,6 +36,7 @@ class FilmController: UIViewController,
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         if !startCameraFromViewController(self, withDelegate: self){
             createAlert("Camera not found",
                 message: "A connection to the camera could not be made",
@@ -60,48 +62,47 @@ class FilmController: UIViewController,
         cameraController.showsCameraControls = false
         cameraController.allowsEditing = false
         cameraController.delegate = delegate
-        cameraController.videoQuality = UIImagePickerControllerQualityType.typeHigh
+        cameraController.videoQuality = UIImagePickerController.QualityType.typeHigh
         
 
         //Custom view configuration
         overlayController = OverlayViewController(nibName: "OverlayViewController", bundle: nil)
         let overlayView: OverlayView = overlayController.view as! OverlayView
-        overlayView.frame = cameraController.view.frame
+        overlayView.frame = view.frame
         
         //Add the overlay after the camera is displayed
         present(cameraController, animated: false, completion: {
             self.cameraController.cameraOverlayView = overlayView
-            //todo
             overlayView.setup(isFirstLaunch: self.isFirstLaunch)
         })
             
         return true
     }
     
-    func imagePickerController(_ picker: UIImagePickerController,
-        didFinishPickingMediaWithInfo info: [String : Any]) {
-            
-        let mediaType = info[UIImagePickerControllerMediaType] as! NSString
-
-        if mediaType == kUTTypeMovie {
-            let path = (info[UIImagePickerControllerMediaURL] as! URL).path
+    public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard info[UIImagePickerController.InfoKey.mediaType] != nil else { return }
+        let mediaType = info[UIImagePickerController.InfoKey.mediaType] as! CFString
+        
+        if mediaType == kUTTypeMovie{
+            let path = (info[UIImagePickerController.InfoKey.mediaURL] as! URL).path
             if UIVideoAtPathIsCompatibleWithSavedPhotosAlbum(path) {
-                UISaveVideoAtPathToSavedPhotosAlbum(path,
-                    self, #selector(FilmController.video(_:didFinishSavingWithError:contextInfo:)),nil)
+                UISaveVideoAtPathToSavedPhotosAlbum(path, self, #selector(FilmController.video(_:didFinishSavingWithError:contextInfo:)),nil)
             }
         }
     }
     
-    func video(_ videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
+    @objc func video(_ videoPath: NSString, didFinishSavingWithError error: NSError?, contextInfo info: AnyObject) {
         overlayController.overlayView.configureAndAnimateSaveView()
     }
     
     //Shortcut for alerts
     func createAlert(_ title: String, message: String, button: String){
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: button, style: UIAlertActionStyle.default, handler: nil))
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: button, style: UIAlertAction.Style.default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    
+    
     
     //MARK: Rotation Management Setup
     func configureAccelerometer(){
@@ -112,8 +113,9 @@ class FilmController: UIViewController,
                 
                 if let accelData: CMAccelerometerData = accelDataMaybe{
                     let xrotation = accelData.acceleration.x
+                    let yrotation = accelData.acceleration.y
                     
-                    if(abs(xrotation) <= 0.6){
+                    if abs(xrotation) <= 0.6 && abs(yrotation) >= 0.6{
                         self.portrait()
                     }
                     else if(xrotation < -0.6){

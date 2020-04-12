@@ -63,11 +63,11 @@ class OverlayView: UIView {
     func didBeginFilmingWithPositiveRotation(_ isPositive: Bool){
         isFilming = true
         //Configure local orientation-based variables
-        var rotation = M_PI_2
+        var rotation = Double.pi/2
         var bbOrigin = CGPoint(x:self.frame.size.width-25, y:0)
         var circleYValue: CGFloat = frame.size.height/2-55
         if !isPositive{
-            rotation = -M_PI_2
+            rotation = -(Double.pi/2)
             bbOrigin = CGPoint.zero
             circleYValue = frame.size.height/2+55
         }
@@ -79,7 +79,7 @@ class OverlayView: UIView {
         
         self.addSubview(blackbar)
         self.addSubview(textLabel)
-        self.bringSubview(toFront: circleView)
+        self.bringSubviewToFront(circleView)
         
         //Animate
         UIView.animate(withDuration: 1.0, animations: {
@@ -90,7 +90,7 @@ class OverlayView: UIView {
                 if(isComplete){
                     UIView.animate(withDuration: 0.5,
                         delay: 0.0,
-                        options: [UIViewAnimationOptions.repeat, UIViewAnimationOptions.autoreverse],
+                        options: [UIView.AnimationOptions.repeat, UIView.AnimationOptions.autoreverse],
                         animations: {self.circleView.alpha = 1.0},
                         completion: nil)
                 }
@@ -99,13 +99,13 @@ class OverlayView: UIView {
     }
     
     //MARK: Flash Toggled
-    func flashPressed(){
+    @objc func flashPressed(){
         //Adjust picture based on flashOn, update flashOn
         if flashOn{
-            flash.setBackgroundImage(UIImage(named: "FlashEmpty"), for: UIControlState())
+            flash.setBackgroundImage(UIImage(named: "FlashEmpty"), for: UIControl.State())
         }
         else{
-            flash.setBackgroundImage(UIImage(named: "FlashFull"), for: UIControlState())
+            flash.setBackgroundImage(UIImage(named: "FlashFull"), for: UIControl.State())
         }
         flashOn = !flashOn
 
@@ -123,7 +123,7 @@ class OverlayView: UIView {
     
     
     //MARK: Timer
-    func updateCounter(){
+    @objc func updateCounter(){
         counter! += 1
         if counter! < 10{
             textLabel.text = "00:00:0" + String(counter!)
@@ -154,7 +154,7 @@ class OverlayView: UIView {
                            delay: 0.0,
                            usingSpringWithDamping: 0.4,
                            initialSpringVelocity: 10,
-                           options: UIViewAnimationOptions(),
+                           options: UIView.AnimationOptions(),
                            animations: {self.focusView.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)},
                            completion: { (didComplete) in
                             if(didComplete){
@@ -180,7 +180,7 @@ class OverlayView: UIView {
         textLabel.textAlignment = .center
         textLabel.textColor = UIColor.white
         self.textLabel.font = UIFont(name: Properties.font, size: Properties.timerFontSize)
-        self.bringSubview(toFront: textLabel)
+        self.bringSubviewToFront(textLabel)
     }
     
     func configureBlackBar(_ bbOrigin: CGPoint){
@@ -189,7 +189,7 @@ class OverlayView: UIView {
             CGSize(width: Properties.blackBarWidthF, height: self.frame.size.height)))
         blackbar.backgroundColor = UIColor.black
         blackbar.alpha = 0.5
-        self.bringSubview(toFront: blackbar)
+        self.bringSubviewToFront(blackbar)
     }
     
     func configureTimer(){
@@ -203,7 +203,7 @@ class OverlayView: UIView {
     }
     
     func configureFlashButton(){
-        flash.setBackgroundImage(UIImage(named: "FlashEmpty"), for: UIControlState())
+        flash.setBackgroundImage(UIImage(named: "FlashEmpty"), for: UIControl.State())
         flash.frame = CGRect(origin: CGPoint(x: frame.size.width/2-Properties.flashbuttonSizeF/2,
             y: frame.size.height/12),
             size: CGSize(width: Properties.flashbuttonSize, height: Properties.flashbuttonSize*2))
@@ -224,7 +224,7 @@ class OverlayView: UIView {
         circleImage.image = UIImage(named: "Circle")
         circleImage.contentMode = .scaleToFill
         circleView.addSubview(circleImage)
-        self.bringSubview(toFront: circleView)
+        self.bringSubviewToFront(circleView)
         self.addSubview(circleView)
     }
     
@@ -238,7 +238,7 @@ class OverlayView: UIView {
         focusImageView.contentMode = .scaleToFill
         focusView.addSubview(focusImageView)
         focusView.alpha = 0.6
-        self.bringSubview(toFront: focusView)
+        self.bringSubviewToFront(focusView)
     }
     
     func configureAndAnimateSaveView(){
@@ -252,7 +252,7 @@ class OverlayView: UIView {
         checkView.image = UIImage(named: "Check")
         checkView.contentMode = .scaleToFill
         saveView.addSubview(checkView)
-        saveView.sendSubview(toBack: checkView)
+        saveView.sendSubviewToBack(checkView)
         saveView.alpha = 0.6
         self.addSubview(saveView)
         
@@ -304,27 +304,28 @@ class OverlayView: UIView {
         orientationLabel.textAlignment = .center
         orientationLabel.lineBreakMode = .byWordWrapping
         orientationLabel.textColor = Properties.iconColor
-        self.bringSubview(toFront: orientationLabel)
+        self.bringSubviewToFront(orientationLabel)
         self.addSubview(orientationLabel)
         
         //Configure Okay Button
-        okayButton.setAttributedTitle(NSAttributedString(string: "Okay"), for: UIControlState())
+        let okayString = NSAttributedString(string: "Okay", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        okayButton.setAttributedTitle(okayString, for: UIControl.State())
         okayButton.backgroundColor = Properties.iconColor
         let buttonWidth: CGFloat = Properties.okayButtonRatio*frame.size.width
         let bOrigin = CGPoint(x: frame.size.width/2-buttonWidth/2, y: (frame.height*7)/8)
-        okayButton.titleLabel!.font = UIFont(name: Properties.font, size: 18)
+        okayButton.titleLabel!.font = UIFont(name: Properties.font, size: 24)
         okayButton.tintColor = UIColor.white
-        okayButton.setTitleColor(UIColor.white, for:  UIControlState())
+        okayButton.setTitleColor(UIColor.white, for:  UIControl.State())
         okayButton.frame = CGRect(origin: bOrigin,
             size: CGSize(width:
                 buttonWidth,
-                height: Properties.buttonHeight))
+                height: Properties.okayButtonHeight))
         okayButton.addTarget(self, action: #selector(OverlayView.nextScreen), for: .touchUpInside)
         self.addSubview(okayButton)
         whichWelcomeScreen += 1
     }
     
-    func nextScreen(){
+    @objc func nextScreen(){
         switch(whichWelcomeScreen){
 
         //Add arrow for flash introduction
@@ -413,21 +414,21 @@ class OverlayView: UIView {
         pictureView.image = UIImage(named: "Phone")
         pictureView.contentMode = .scaleToFill
         phoneView.addSubview(pictureView)
-        phoneView.sendSubview(toBack: pictureView)
+        phoneView.sendSubviewToBack(pictureView)
         self.addSubview(phoneView)
         
         //Animate
         UIView.animate(withDuration: 0.75, animations: {self.orientationLabel.alpha = 0.75})
         UIView.animate(withDuration: 1.5, delay: 0.75, options: [], animations: {
             self.orientationLabel.alpha = 0.75
-            self.phoneView.transform = CGAffineTransform(rotationAngle: CGFloat(-M_PI_2))
+            self.phoneView.transform = CGAffineTransform(rotationAngle: CGFloat(-(Double.pi/2)))
             }, completion: { (didComplete) in
                 if didComplete{
                     self.configureRedCircle(self.frame.height/2)
                     self.addSubview(self.circleView)
                     UIView.animate(withDuration: 0.5,
                         delay: 0.0,
-                        options: [UIViewAnimationOptions.repeat, UIViewAnimationOptions.autoreverse],
+                        options: [UIView.AnimationOptions.repeat, UIView.AnimationOptions.autoreverse],
                         animations: {self.circleView.alpha = 1.0},
                         completion: nil)
                 }

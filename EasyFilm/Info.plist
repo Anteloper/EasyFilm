@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.3</string>
+	<string>1.4</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>To Record Video</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>To Save Video</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>To Record Audio</string>
 	<key>NSPhotoLibraryUsageDescription</key>

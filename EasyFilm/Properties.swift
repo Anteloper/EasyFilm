@@ -13,11 +13,11 @@ internal struct Properties{
     static let upArrowViewRatio: CGFloat = 1/2
     static let orientationLabelRatio: CGFloat = 3/4
     static let okayButtonRatio: CGFloat = 7/8
+    static let okayButtonHeight: CGFloat = 50
     static let saveViewRatio: CGFloat = 3/4
     static let phoneViewRatio: CGFloat = 2/3
     static let portraitLockRatio: CGFloat = 2/3
     static let portraitLockHeight: CGFloat = 300
-    static let buttonHeight: CGFloat = 30
     static let flashbuttonSize = 37
     static let flashbuttonSizeF: CGFloat = 45
     static let labelHeightF: CGFloat = 25
